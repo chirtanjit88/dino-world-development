@@ -374,3 +374,20 @@ function dino_world_block_editor_assets() {
 	);
 }
 add_action( 'enqueue_block_editor_assets', 'dino_world_block_editor_assets' );
+
+/**
+ * Fallback: Ensure Dino World Blocks plugin is loaded and registered
+ * even if not yet explicitly activated via wp-admin.
+ */
+add_action(
+	'after_setup_theme',
+	function() {
+		if ( ! function_exists( 'dino_register_acf_blocks' ) ) {
+			$plugin_file = WP_PLUGIN_DIR . '/dino-world-blocks/dino-world-blocks.php';
+			if ( file_exists( $plugin_file ) ) {
+				require_once $plugin_file;
+			}
+		}
+	},
+	5
+);

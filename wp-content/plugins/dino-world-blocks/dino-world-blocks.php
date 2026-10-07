@@ -64,6 +64,11 @@ add_action( 'admin_notices', 'dino_blocks_admin_notice' );
  * Each block can either contain a modern block.json or use acf_register_block_type.
  */
 function dino_register_acf_blocks() {
+	static $registered = false;
+	if ( $registered ) {
+		return;
+	}
+
 	$blocks_dir = DINO_BLOCKS_DIR . 'blocks';
 
 	if ( ! is_dir( $blocks_dir ) ) {
@@ -90,5 +95,8 @@ function dino_register_acf_blocks() {
 			}
 		}
 	}
+
+	$registered = true;
 }
-add_action( 'init', 'dino_register_acf_blocks', 5 );
+add_action( 'init', 'dino_register_acf_blocks', 10 );
+
