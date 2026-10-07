@@ -10,7 +10,7 @@ html/
 wp-config.php
 
 # WordPress Content & Generated Folders
-wp-content/uploads/
+
 wp-content/cache/
 wp-content/upgrade/
 wp-content/backup-*/
