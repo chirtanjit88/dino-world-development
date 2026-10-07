@@ -21,6 +21,14 @@ define( 'DINO_BLOCKS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DINO_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
 
 /**
+ * Load plugin textdomain on init
+ */
+function dino_load_blocks_textdomain() {
+	load_plugin_textdomain( 'dino-world-blocks', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+add_action( 'init', 'dino_load_blocks_textdomain' );
+
+/**
  * Register custom Gutenberg block category for Dinosaur World
  *
  * @param array                   $categories Array of block categories.
@@ -61,7 +69,7 @@ add_action( 'admin_notices', 'dino_blocks_admin_notice' );
 
 /**
  * Automatically register all ACF blocks found inside the /blocks directory.
- * Each block can either contain a modern block.json or use acf_register_block_type.
+ * Each block contains a block.json metadata file.
  */
 function dino_register_acf_blocks() {
 	static $registered = false;
@@ -85,12 +93,9 @@ function dino_register_acf_blocks() {
 		$block_path = $blocks_dir . '/' . $folder;
 
 		if ( is_dir( $block_path ) ) {
-			// If block.json exists, register using native WP 5.8+ / ACF 5.8+ method
 			if ( file_exists( $block_path . '/block.json' ) && function_exists( 'register_block_type' ) ) {
-				register_block_type( $block_path );
-			}
-			// Alternatively if an init.php exists in the block folder, include it
-			elseif ( file_exists( $block_path . '/init.php' ) ) {
+				register_block_type( $block_path . '/block.json' );
+			} elseif ( file_exists( $block_path . '/init.php' ) ) {
 				require_once $block_path . '/init.php';
 			}
 		}
@@ -99,4 +104,5 @@ function dino_register_acf_blocks() {
 	$registered = true;
 }
 add_action( 'init', 'dino_register_acf_blocks', 10 );
+
 
