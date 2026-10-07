@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/blog-list",
+  "title": "Blog List",
+  "description": "Lists all blog posts in a 3-column grid with live category filters, search bar, and pagination matching blog.html. No ACF fields required.",
+  "category": "dino-world-blocks",
+  "icon": "grid-view",
+  "keywords": [
+    "blog list",
+    "all posts",
+    "articles",
+    "blog grid",
+    "news",
+    "posts"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "blog-list.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

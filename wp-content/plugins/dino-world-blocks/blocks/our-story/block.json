@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/our-story",
+  "title": "Our Story",
+  "description": "Our Story section with image (optional left or right layout), heading, narrative description, and highlight cards.",
+  "category": "dino-world-blocks",
+  "icon": "book-alt",
+  "keywords": [
+    "our story",
+    "about us",
+    "story",
+    "history",
+    "about",
+    "cards"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "our-story.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/featured-blog",
+  "title": "Featured Blog",
+  "description": "Featured blog block displaying the latest or a selected blog post with image, badge, metadata, and link.",
+  "category": "dino-world-blocks",
+  "icon": "welcome-write-blog",
+  "keywords": [
+    "featured blog",
+    "latest post",
+    "blog",
+    "post",
+    "article",
+    "news"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "featured-blog.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

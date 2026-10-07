@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/adventure-features",
+  "title": "Adventure Features",
+  "description": "Adventure Around Every Corner section with heading, description, 3 feature icons, and right-side showcase image.",
+  "category": "dino-world-blocks",
+  "icon": "palmtree",
+  "keywords": ["adventure", "features", "icons", "corner", "showcase"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "adventure-features.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

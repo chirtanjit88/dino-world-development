@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/plan-your-visit",
+  "title": "Plan Your Visit",
+  "description": "Plan your visit section with features list, ticket pricing cards, and CTA button.",
+  "category": "dino-world-blocks",
+  "icon": "tickets-alt",
+  "keywords": ["plan", "visit", "tickets", "pricing", "cards"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "plan-your-visit.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

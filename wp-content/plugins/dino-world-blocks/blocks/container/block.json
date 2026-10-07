@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/container",
+  "title": "Custom Container",
+  "description": "Simple container block that wraps any inner blocks inside the theme fixed container width (1440px).",
+  "category": "dino-world-blocks",
+  "icon": "layout",
+  "keywords": [
+    "container",
+    "section",
+    "wrapper",
+    "row",
+    "width",
+    "layout"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "container.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

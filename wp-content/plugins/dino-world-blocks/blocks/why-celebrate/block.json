@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/why-celebrate",
+  "title": "Why Celebrate",
+  "description": "Why Celebrate section with section heading, description paragraph, and feature cards (icon, title, description).",
+  "category": "dino-world-blocks",
+  "icon": "star-filled",
+  "keywords": [
+    "why celebrate",
+    "birthday",
+    "features",
+    "activities",
+    "party",
+    "celebrate"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "why-celebrate.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

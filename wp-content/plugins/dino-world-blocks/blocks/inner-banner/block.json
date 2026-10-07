@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/inner-banner",
+  "title": "Inner Banner",
+  "description": "Inner page hero banner with title, description, and custom background image overlay.",
+  "category": "dino-world-blocks",
+  "icon": "cover-image",
+  "keywords": ["banner", "inner", "hero", "header", "page", "title"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "inner-banner.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

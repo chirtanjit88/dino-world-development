@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/why-choose",
+  "title": "Why Choose",
+  "description": "Why Choose Dinosaur World section with heading and 5-card feature grid (icon, title, description).",
+  "category": "dino-world-blocks",
+  "icon": "awards",
+  "keywords": [
+    "why choose",
+    "school excursion",
+    "features",
+    "curriculum",
+    "education",
+    "reasons"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "why-choose.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

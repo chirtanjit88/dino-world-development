@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/testimonials",
+  "title": "Testimonials Carousel",
+  "description": "Visitor reviews & testimonials slider with star ratings, feedback cards, and decorative dinosaur illustration.",
+  "category": "dino-world-blocks",
+  "icon": "testimonial",
+  "keywords": [
+    "testimonials",
+    "reviews",
+    "slider",
+    "carousel",
+    "quotes",
+    "stars"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "testimonials.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

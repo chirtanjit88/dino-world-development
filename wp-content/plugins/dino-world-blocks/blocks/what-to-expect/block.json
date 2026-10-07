@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/what-to-expect",
+  "title": "What to Expect",
+  "description": "What to Expect section with intro text, rich description, highlight banner, dual CTA buttons, and layered images.",
+  "category": "dino-world-blocks",
+  "icon": "visibility",
+  "keywords": ["about", "expect", "intro", "dinosaur", "home"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "what-to-expect.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/faq",
+  "title": "FAQ Section",
+  "description": "Frequently Asked Questions accordion section with tagline, heading, and expandable items.",
+  "category": "dino-world-blocks",
+  "icon": "editor-help",
+  "keywords": ["faq", "accordion", "questions", "answers", "help"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "faq.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

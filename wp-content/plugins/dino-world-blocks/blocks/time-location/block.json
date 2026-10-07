@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/time-location",
+  "title": "Opening Hours & Location",
+  "description": "Operating hours card with schedule repeater, interactive location card with map directions, and decorative dinosaur sketch illustration.",
+  "category": "dino-world-blocks",
+  "icon": "clock",
+  "keywords": ["hours", "opening", "location", "map", "directions", "time"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "time-location.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

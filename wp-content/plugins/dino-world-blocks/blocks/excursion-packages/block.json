@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/excursion-packages",
+  "title": "Excursion Packages",
+  "description": "Excursion packages section with pricing cards, features list (with green tick icons), and price per student.",
+  "category": "dino-world-blocks",
+  "icon": "tickets-alt",
+  "keywords": [
+    "excursion packages",
+    "school packages",
+    "pricing",
+    "tickets",
+    "tour",
+    "student price"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "excursion-packages.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

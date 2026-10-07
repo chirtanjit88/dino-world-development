@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/excursion-highlights",
+  "title": "Excursion Highlights",
+  "description": "Excursion Highlights / Attractions section with heading and highlight cards (image, title, description).",
+  "category": "dino-world-blocks",
+  "icon": "palmtree",
+  "keywords": [
+    "excursion highlights",
+    "school excursion",
+    "attractions",
+    "dinosaurs",
+    "fossil discovery",
+    "dino train"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "excursion-highlights.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/celebrate-birthday",
+  "title": "Celebrate Birthday",
+  "description": "Celebrate your birthday section with images gallery and 4 pricing/package cards (Prices, Package Includes, Questions & Booking, Private Booking).",
+  "category": "dino-world-blocks",
+  "icon": "buddicons-activity",
+  "keywords": [
+    "celebrate birthday",
+    "birthday packages",
+    "prehistoric",
+    "prices",
+    "party package",
+    "private booking"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "celebrate-birthday.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

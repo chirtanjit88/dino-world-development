@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/birthday-enquiry",
+  "title": "Birthday Party Booking Enquiry",
+  "description": "Birthday party booking enquiry section with heading, description, dinosaur illustration, and contact form shortcode.",
+  "category": "dino-world-blocks",
+  "icon": "email-alt",
+  "keywords": [
+    "birthday enquiry",
+    "booking",
+    "contact form",
+    "shortcode",
+    "party plan",
+    "dino birthday"
+  ],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "birthday-enquiry.php"
+  },
+  "supports": {
+    "align": [
+      "full",
+      "wide"
+    ],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/cta-banner",
+  "title": "CTA Banner",
+  "description": "Call to action banner with heading, description, CTA button, and background image overlay.",
+  "category": "dino-world-blocks",
+  "icon": "megaphone",
+  "keywords": ["cta", "banner", "call to action", "face to face", "button", "dinosaur"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "cta-banner.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}
