@@ -742,9 +742,10 @@ h6.is-style-green-heading {
 
 .a-card {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   overflow: hidden;
   border-radius: 20px;
+  height: 325px;
 }
 
 .a-card-img {
@@ -752,6 +753,7 @@ h6.is-style-green-heading {
   overflow: hidden;
   border-radius: 20px;
   height: 100%;
+  width: 100%;
 }
 
 .a-card-img a {

@@ -695,34 +695,21 @@ $has_attractions   = ! empty( $attraction_items );
 					<div class="row">
 						<?php
 						foreach ( $attraction_items as $index => $item ) :
-							$col_class = 'col-sm-4';
 							if ( 1 === $total_attractions ) {
 								$col_class = 'col-md-6 mx-auto';
-							} elseif ( 2 === $total_attractions ) {
-								$col_class = 0 === $index ? 'col-sm-7' : 'col-sm-5';
-							} elseif ( 3 === $total_attractions ) {
-								$col_class = 'col-sm-4';
-							} elseif ( 4 === $total_attractions ) {
-								if ( 0 === $index ) {
-									$col_class = 'col-sm-7';
-								} elseif ( 1 === $index ) {
-									$col_class = 'col-sm-5';
-								} else {
-									$col_class = 'col-sm-6';
-								}
+							} elseif ( 0 === $index ) {
+								$col_class = 'col-sm-7';
+							} elseif ( 1 === $index ) {
+								$col_class = 'col-sm-5';
 							} else {
-								if ( 0 === $index ) {
-									$col_class = 'col-sm-7';
-								} elseif ( 1 === $index ) {
-									$col_class = 'col-sm-5';
-								} else {
-									$col_class = 'col-sm-4';
-								}
+								// Apart from the first 2 boxes, all other attraction boxes are in the same size
+								$col_class = 'col-sm-4';
 							}
+							$card_size_class = $index < 2 ? 'a-card-featured' : 'a-card-sub';
 							$attr_aos = $index < 2 ? ' data-aos="fade-down"' : ' data-aos="fade-up"';
 							?>
 							<div class="<?php echo esc_attr( $col_class ); ?>"<?php echo $attr_aos; ?>>
-								<div class="a-card">
+								<div class="a-card <?php echo esc_attr( $card_size_class ); ?>">
 									<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
 										<div class="a-card-img">
 											<a href="<?php echo esc_url( $item['permalink'] ); ?>" aria-label="<?php echo esc_attr( $item['title'] ); ?>">
@@ -865,34 +852,21 @@ $has_attractions   = ! empty( $attraction_items );
 				<div class="row">
 					<?php
 					foreach ( $attraction_items as $index => $item ) :
-						$col_class = 'col-sm-4';
 						if ( 1 === $total_attractions ) {
 							$col_class = 'col-md-6 mx-auto';
-						} elseif ( 2 === $total_attractions ) {
-							$col_class = 0 === $index ? 'col-sm-7' : 'col-sm-5';
-						} elseif ( 3 === $total_attractions ) {
-							$col_class = 'col-sm-4';
-						} elseif ( 4 === $total_attractions ) {
-							if ( 0 === $index ) {
-								$col_class = 'col-sm-7';
-							} elseif ( 1 === $index ) {
-								$col_class = 'col-sm-5';
-							} else {
-								$col_class = 'col-sm-6';
-							}
+						} elseif ( 0 === $index ) {
+							$col_class = 'col-sm-7';
+						} elseif ( 1 === $index ) {
+							$col_class = 'col-sm-5';
 						} else {
-							if ( 0 === $index ) {
-								$col_class = 'col-sm-7';
-							} elseif ( 1 === $index ) {
-								$col_class = 'col-sm-5';
-							} else {
-								$col_class = 'col-sm-4';
-							}
+							// Apart from the first 2 boxes, all other attraction boxes are in the same size
+							$col_class = 'col-sm-4';
 						}
+						$card_size_class = $index < 2 ? 'a-card-featured' : 'a-card-sub';
 						$attr_aos = $index < 2 ? ' data-aos="fade-down"' : ' data-aos="fade-up"';
 						?>
 						<div class="<?php echo esc_attr( $col_class ); ?>"<?php echo $attr_aos; ?>>
-							<div class="a-card">
+							<div class="a-card <?php echo esc_attr( $card_size_class ); ?>">
 								<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
 									<div class="a-card-img">
 										<a href="<?php echo esc_url( $item['permalink'] ); ?>" aria-label="<?php echo esc_attr( $item['title'] ); ?>">

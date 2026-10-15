@@ -612,6 +612,9 @@ display: none;
     .oura-card{
     margin-top: 30px;
 }
+    .a-card{
+    height: 280px;
+}
 
 /* birthday paty  page  */
   /* why celebrate  */
@@ -793,6 +796,10 @@ display: none;
 .glass-btn{
   padding: 10px;
   font-size: 16px;
+}
+
+.a-card {
+  height: 240px;
 }
 
 /* attraction page ---- */
@@ -1047,6 +1054,10 @@ margin: 0 auto 10px;
  .a-card-desc p {
   font-size: 12px;
   -webkit-line-clamp: 2;
+ }
+
+ .a-card {
+  height: 220px;
  }
 
   /* Abouy section----------- */
