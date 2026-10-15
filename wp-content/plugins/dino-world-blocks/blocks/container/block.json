@@ -14,9 +14,16 @@
     "width",
     "layout"
   ],
+  "editorStyle": "file:./container-editor.css",
   "acf": {
     "mode": "preview",
     "renderTemplate": "container.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
   },
   "supports": {
     "align": [
@@ -25,6 +32,14 @@
     ],
     "anchor": true,
     "customClassName": true,
-    "jsx": true
+    "jsx": true,
+    "color": {
+      "background": true,
+      "text": true
+    },
+    "spacing": {
+      "padding": true,
+      "margin": true
+    }
   }
 }

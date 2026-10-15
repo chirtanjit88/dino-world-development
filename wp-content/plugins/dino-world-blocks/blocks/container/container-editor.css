@@ -1,0 +1,80 @@
+/**
+ * Custom Container Block - Editor Styles
+ * Matches the project container width (1440px) inside Gutenberg editor.
+ */
+
+.wp-block[data-type="dino-world/container"],
+.wp-block-dino-world-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.custom-container-sec {
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* The 1440px project container */
+.custom-container-sec .container,
+.wp-block-dino-world-container .container {
+  max-width: 1440px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  box-sizing: border-box !important;
+}
+
+/* InnerBlocks list inside Gutenberg editor canvas */
+.custom-container-sec .container > .block-editor-inner-blocks > .block-editor-block-list__layout,
+.wp-block-dino-world-container .container > .block-editor-inner-blocks > .block-editor-block-list__layout {
+  max-width: 1440px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.custom-container-sec .container > .block-editor-inner-blocks,
+.wp-block-dino-world-container .block-editor-inner-blocks {
+  width: 100% !important;
+}
+
+/* Narrow container */
+.custom-container-sec .container-narrow,
+.wp-block-dino-world-container .container-narrow {
+  max-width: 980px !important;
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+/* Fluid container */
+.custom-container-sec .container-fluid,
+.wp-block-dino-world-container .container-fluid {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+/* Section paddings */
+.custom-container-sec.sec-padding {
+  padding: 60px 0;
+}
+
+.custom-container-sec.sec-padding1 {
+  padding: 30px 0;
+}
+
+.custom-container-sec.padding-large {
+  padding: 100px 0;
+}
+
+.custom-container-sec.padding-none {
+  padding: 0;
+}

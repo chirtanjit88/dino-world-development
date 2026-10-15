@@ -172,9 +172,18 @@ h6.is-style-green-heading {
   padding: 0 15px;
 }
 
+.custom-container-sec,
 .custom-container-block {
   position: relative;
   width: 100%;
+  box-sizing: border-box;
+}
+
+.custom-container-sec .container {
+  max-width: 1440px !important;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 15px;
 }
 
 .custom-container-block.theme-dark-bg {
