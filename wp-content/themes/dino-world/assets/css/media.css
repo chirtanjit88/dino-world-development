@@ -288,6 +288,11 @@
   font-size: 24px;
 }
 
+.a-card-desc p {
+  font-size: 13px;
+  -webkit-line-clamp: 2;
+}
+
 .dino-sketch img{
   display: none;
 }
@@ -1037,6 +1042,11 @@ margin: 0 auto 10px;
 
  .a-card-txt{
   font-size: 20px;
+ }
+
+ .a-card-desc p {
+  font-size: 12px;
+  -webkit-line-clamp: 2;
  }
 
   /* Abouy section----------- */

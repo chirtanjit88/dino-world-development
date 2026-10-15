@@ -191,6 +191,14 @@ $is_truthy_acf = function( $val ) {
 	return (bool) $val;
 };
 
+// Check top-level ACF fields first
+if ( function_exists( 'get_field' ) ) {
+	$top_all = get_field( 'show_all_attractions' ) ?: ( get_field( 'show_all_attraction' ) ?: ( get_field( 'show_all' ) ?: get_field( 'all_attractions' ) ) );
+	if ( $is_truthy_acf( $top_all ) ) {
+		$show_all_attractions = true;
+	}
+}
+
 // Method A: ACF have_rows on attraction_grid / attractions_grid
 if ( function_exists( 'have_rows' ) ) {
 	$grid_group_keys = array( 'attractions_grid', 'attraction_grid' );
@@ -200,7 +208,7 @@ if ( function_exists( 'have_rows' ) ) {
 				the_row();
 				$g_tag = get_sub_field( 'attractions_tagline' ) ?: get_sub_field( 'tagline' );
 				$g_hd  = get_sub_field( 'attractions_heading' ) ?: get_sub_field( 'heading' );
-				$g_all = get_sub_field( 'show_all_attractions' );
+				$g_all = get_sub_field( 'show_all_attractions' ) ?: ( get_sub_field( 'show_all_attraction' ) ?: ( get_sub_field( 'show_all' ) ?: get_sub_field( 'all_attractions' ) ) );
 				$g_cnt = get_sub_field( 'attractions_count' );
 
 				if ( ! empty( $g_tag ) ) {
@@ -263,24 +271,33 @@ if ( function_exists( 'have_rows' ) ) {
 }
 
 // Method B: Direct get_field fallback if group exists as array
-if ( function_exists( 'get_field' ) && ! $show_all_attractions && empty( $selected_post_ids ) ) {
+if ( function_exists( 'get_field' ) ) {
 	$grid_group_keys = array( 'attractions_grid', 'attraction_grid' );
 	foreach ( $grid_group_keys as $gg_key ) {
 		$group_val = get_field( $gg_key );
 		if ( ! empty( $group_val ) && is_array( $group_val ) ) {
 			if ( empty( $attractions_tagline ) && ! empty( $group_val['attractions_tagline'] ) ) {
 				$attractions_tagline = $group_val['attractions_tagline'];
+			} elseif ( empty( $attractions_tagline ) && ! empty( $group_val['tagline'] ) ) {
+				$attractions_tagline = $group_val['tagline'];
 			}
+
 			if ( empty( $attractions_heading ) && ! empty( $group_val['attractions_heading'] ) ) {
 				$attractions_heading = $group_val['attractions_heading'];
+			} elseif ( empty( $attractions_heading ) && ! empty( $group_val['heading'] ) ) {
+				$attractions_heading = $group_val['heading'];
 			}
-			if ( ! empty( $group_val['show_all_attractions'] ) && $is_truthy_acf( $group_val['show_all_attractions'] ) ) {
+
+			$g_all = ! empty( $group_val['show_all_attractions'] ) ? $group_val['show_all_attractions'] : ( ! empty( $group_val['show_all_attraction'] ) ? $group_val['show_all_attraction'] : ( ! empty( $group_val['show_all'] ) ? $group_val['show_all'] : ( ! empty( $group_val['all_attractions'] ) ? $group_val['all_attractions'] : null ) ) );
+			if ( $is_truthy_acf( $g_all ) ) {
 				$show_all_attractions = true;
 			}
+
 			if ( ! empty( $group_val['attractions_count'] ) && (int) $group_val['attractions_count'] > 0 ) {
 				$attractions_count = (int) $group_val['attractions_count'];
 			}
-			if ( ! empty( $group_val['attractions'] ) && is_array( $group_val['attractions'] ) ) {
+
+			if ( empty( $selected_post_ids ) && ! empty( $group_val['attractions'] ) && is_array( $group_val['attractions'] ) ) {
 				foreach ( $group_val['attractions'] as $row ) {
 					$sel = ! empty( $row['attractions_selection'] ) ? $row['attractions_selection'] : ( ! empty( $row['select_attractions'] ) ? $row['select_attractions'] : ( ! empty( $row['attraction'] ) ? $row['attraction'] : null ) );
 					if ( ! empty( $sel ) ) {
@@ -305,32 +322,32 @@ if ( function_exists( 'get_field' ) && ! $show_all_attractions && empty( $select
 	}
 }
 
-// Method C: Fallback from raw block data
-if ( empty( $attractions_tagline ) || empty( $attractions_heading ) || ( empty( $selected_post_ids ) && ! $show_all_attractions ) ) {
+// Method C: Always scan raw block data for fields
+if ( ! empty( $block_data ) ) {
 	foreach ( $block_data as $k => $v ) {
 		if ( empty( $k ) || $k[0] === '_' || empty( $v ) ) {
 			continue;
 		}
 		// Tagline
-		if ( empty( $attractions_tagline ) && ( preg_match( '/attractions_tagline$/', $k ) || preg_match( '/tagline$/', $k ) ) ) {
+		if ( empty( $attractions_tagline ) && ( preg_match( '/(attractions_tagline|tagline)$/', $k ) ) ) {
 			$attractions_tagline = $v;
 		}
 		// Heading
-		if ( empty( $attractions_heading ) && ( preg_match( '/attractions_heading$/', $k ) || preg_match( '/heading$/', $k ) ) ) {
+		if ( empty( $attractions_heading ) && ( preg_match( '/(attractions_heading|heading)$/', $k ) ) ) {
 			$attractions_heading = $v;
 		}
-		// Show all checkbox
-		if ( preg_match( '/show_all_attractions$/', $k ) ) {
+		// Show all checkbox (check any key ending in show_all_attractions, show_all_attraction, show_all, all_attractions)
+		if ( preg_match( '/(show_all_attractions|show_all_attraction|show_all|all_attractions)$/', $k ) ) {
 			if ( $is_truthy_acf( $v ) ) {
 				$show_all_attractions = true;
 			}
 		}
 		// Count
-		if ( preg_match( '/attractions_count$/', $k ) && (int) $v > 0 ) {
+		if ( ( -1 === $attractions_count || $attractions_count <= 0 ) && preg_match( '/attractions_count$/', $k ) && (int) $v > 0 ) {
 			$attractions_count = (int) $v;
 		}
-		// Selection inside repeater (e.g. attraction_grid_attractions_0_attractions_selection) or flat
-		if ( preg_match( '/attractions_selection$/', $k ) || preg_match( '/select_attractions$/', $k ) ) {
+		// Selection inside repeater or flat (only if not showing all)
+		if ( ! $show_all_attractions && ( preg_match( '/attractions_selection$/', $k ) || preg_match( '/select_attractions$/', $k ) ) ) {
 			if ( is_array( $v ) ) {
 				foreach ( $v as $item ) {
 					$p_id = is_object( $item ) ? $item->ID : (int) $item;
@@ -364,17 +381,65 @@ if ( $show_all_attractions ) {
 
 	$all_attractions_query = new WP_Query(
 		array(
-			'post_type'      => $cpt_types,
-			'posts_per_page' => $attractions_count > 0 ? $attractions_count : -1,
-			'post_status'    => 'publish',
-			'orderby'        => 'menu_order date',
-			'order'          => 'ASC',
-			'fields'         => 'ids',
+			'post_type'           => $cpt_types,
+			'posts_per_page'      => -1, // Always show all attractions when checked
+			'post_status'         => 'publish',
+			'orderby'             => array( 'menu_order' => 'ASC', 'date' => 'ASC' ),
+			'fields'              => 'ids',
+			'suppress_filters'    => true,
+			'no_found_rows'       => true,
+			'ignore_sticky_posts' => true,
 		)
 	);
 
 	if ( ! empty( $all_attractions_query->posts ) ) {
 		$selected_post_ids = $all_attractions_query->posts;
+	} else {
+		// Fallback query via get_posts
+		$fallback_ids = get_posts(
+			array(
+				'post_type'        => $cpt_types,
+				'posts_per_page'   => -1,
+				'numberposts'      => -1,
+				'post_status'      => 'publish',
+				'orderby'          => 'menu_order',
+				'order'            => 'ASC',
+				'fields'           => 'ids',
+				'suppress_filters' => true,
+			)
+		);
+		if ( ! empty( $fallback_ids ) ) {
+			$selected_post_ids = $fallback_ids;
+		}
+	}
+} elseif ( empty( $selected_post_ids ) ) {
+	// If Show All is not checked AND no manual selection was made, query up to attractions_count (or all if not specified)
+	$cpt_types = array();
+	if ( post_type_exists( 'attraction' ) ) {
+		$cpt_types[] = 'attraction';
+	}
+	if ( post_type_exists( 'attractions' ) ) {
+		$cpt_types[] = 'attractions';
+	}
+	if ( empty( $cpt_types ) ) {
+		$cpt_types = array( 'attraction', 'attractions' );
+	}
+
+	$fallback_query = new WP_Query(
+		array(
+			'post_type'           => $cpt_types,
+			'posts_per_page'      => $attractions_count > 0 ? $attractions_count : -1,
+			'post_status'         => 'publish',
+			'orderby'             => array( 'menu_order' => 'ASC', 'date' => 'ASC' ),
+			'fields'              => 'ids',
+			'suppress_filters'    => true,
+			'no_found_rows'       => true,
+			'ignore_sticky_posts' => true,
+		)
+	);
+
+	if ( ! empty( $fallback_query->posts ) ) {
+		$selected_post_ids = $fallback_query->posts;
 	}
 }
 
@@ -383,13 +448,29 @@ $attraction_items = array();
 if ( ! empty( $selected_post_ids ) ) {
 	foreach ( $selected_post_ids as $p_id ) {
 		$post_obj = get_post( $p_id );
-		if ( ! empty( $post_obj ) && 'publish' === $post_obj->post_status ) {
+		if ( ! empty( $post_obj ) && ( 'publish' === $post_obj->post_status || is_preview() || current_user_can( 'edit_posts' ) ) ) {
 			$thumb_url = get_the_post_thumbnail_url( $p_id, 'full' );
+			if ( empty( $thumb_url ) ) {
+				$thumb_url = get_template_directory_uri() . '/assets/image/Life-size-Dinosaurs.png';
+			}
+
+			// Get post excerpt
+			$excerpt = get_the_excerpt( $p_id );
+			if ( empty( $excerpt ) ) {
+				if ( ! empty( $post_obj->post_excerpt ) ) {
+					$excerpt = $post_obj->post_excerpt;
+				} elseif ( ! empty( $post_obj->post_content ) ) {
+					$excerpt = wp_trim_words( wp_strip_all_tags( $post_obj->post_content ), 16, '...' );
+				}
+			}
+			$excerpt = wp_strip_all_tags( $excerpt );
+
 			$attraction_items[] = array(
 				'id'        => $p_id,
 				'title'     => get_the_title( $p_id ),
 				'permalink' => get_permalink( $p_id ),
-				'thumbnail' => $thumb_url ? $thumb_url : '',
+				'thumbnail' => $thumb_url,
+				'excerpt'   => $excerpt,
 			);
 		}
 	}
@@ -644,16 +725,22 @@ $has_attractions   = ! empty( $attraction_items );
 								<div class="a-card">
 									<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
 										<div class="a-card-img">
-											<img src="<?php echo esc_url( $item['thumbnail'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>" />
+											<a href="<?php echo esc_url( $item['permalink'] ); ?>" aria-label="<?php echo esc_attr( $item['title'] ); ?>">
+												<img src="<?php echo esc_url( $item['thumbnail'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>" />
+											</a>
 										</div>
 									<?php endif; ?>
 									<div class="acrd-cntn">
-										<h5 class="a-card-txt"><?php echo esc_html( $item['title'] ); ?></h5>
-										<div class="a-card-btn">
-											<a class="glass-btn" href="<?php echo esc_url( $item['permalink'] ); ?>">
-												<?php esc_html_e( 'Learn More', 'dino-world' ); ?>
+										<h5 class="a-card-txt">
+											<a href="<?php echo esc_url( $item['permalink'] ); ?>">
+												<?php echo esc_html( $item['title'] ); ?>
 											</a>
-										</div>
+										</h5>
+										<?php if ( ! empty( $item['excerpt'] ) ) : ?>
+											<div class="a-card-desc">
+												<p><?php echo esc_html( $item['excerpt'] ); ?></p>
+											</div>
+										<?php endif; ?>
 									</div>
 								</div>
 							</div>
@@ -808,16 +895,22 @@ $has_attractions   = ! empty( $attraction_items );
 							<div class="a-card">
 								<?php if ( ! empty( $item['thumbnail'] ) ) : ?>
 									<div class="a-card-img">
-										<img src="<?php echo esc_url( $item['thumbnail'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>" />
+										<a href="<?php echo esc_url( $item['permalink'] ); ?>" aria-label="<?php echo esc_attr( $item['title'] ); ?>">
+											<img src="<?php echo esc_url( $item['thumbnail'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>" />
+										</a>
 									</div>
 								<?php endif; ?>
 								<div class="acrd-cntn">
-									<h5 class="a-card-txt"><?php echo esc_html( $item['title'] ); ?></h5>
-									<div class="a-card-btn">
-										<a class="glass-btn" href="<?php echo esc_url( $item['permalink'] ); ?>">
-											<?php esc_html_e( 'Learn More', 'dino-world' ); ?>
+									<h5 class="a-card-txt">
+										<a href="<?php echo esc_url( $item['permalink'] ); ?>">
+											<?php echo esc_html( $item['title'] ); ?>
 										</a>
-									</div>
+									</h5>
+									<?php if ( ! empty( $item['excerpt'] ) ) : ?>
+										<div class="a-card-desc">
+											<p><?php echo esc_html( $item['excerpt'] ); ?></p>
+										</div>
+									<?php endif; ?>
 								</div>
 							</div>
 						</div>
