@@ -179,13 +179,12 @@ if ( empty( $features ) && ! empty( $block_data ) ) {
 		<?php endif; ?>
 
 		<?php if ( ! empty( $features ) ) : ?>
-			<div class="row">
+			<div class="row justify-content-center">
 				<?php
 				$total_cards = count( $features );
 				$col_class   = ( $total_cards <= 3 ) ? 'col-md-4' : ( ( $total_cards === 4 ) ? 'col-md-3 col-sm-6' : 'col-md-4 col-sm-6' );
 
 				foreach ( $features as $index => $item ) :
-					$para_class = ( 1 === $index && 3 === $total_cards ) ? 'why-c-para why-c-para2' : 'why-c-para';
 					?>
 					<div class="<?php echo esc_attr( $col_class ); ?>" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $index * 100 ); ?>">
 						<div class="why-c-card">
@@ -203,7 +202,7 @@ if ( empty( $features ) && ! empty( $block_data ) ) {
 								<?php endif; ?>
 
 								<?php if ( ! empty( $item['description'] ) ) : ?>
-									<div class="<?php echo esc_attr( $para_class ); ?>">
+									<div class="why-c-para">
 										<?php if ( strpos( $item['description'], '<p>' ) !== false ) : ?>
 											<?php echo wp_kses_post( $item['description'] ); ?>
 										<?php else : ?>
