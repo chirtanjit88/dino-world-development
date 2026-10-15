@@ -242,7 +242,7 @@ $tick_icon_url = get_template_directory_uri() . '/assets/image/tick.png';
 								}
 							}
 
-							$card_extra = ( $card_idx > 0 || ! $has_li || count( $li_items ) > 4 ) ? ' cel-card-cntn1' : '';
+							$card_extra = ( $card_idx > 0 ) ? ' cel-card-cntn1' : '';
 							?>
 							<div class="<?php echo esc_attr( $col_size ); ?>">
 								<div class="cel-card-cntn<?php echo esc_attr( $card_extra ); ?>">
@@ -256,69 +256,22 @@ $tick_icon_url = get_template_directory_uri() . '/assets/image/tick.png';
 
 									<?php if ( ! empty( $items_raw ) ) : ?>
 										<?php if ( $has_li ) : ?>
-											<?php
-											$total_li = count( $li_items );
-											if ( $total_li > 4 ) :
-												$half = (int) ceil( $total_li / 2 );
-												$col1 = array_slice( $li_items, 0, $half );
-												$col2 = array_slice( $li_items, $half );
-												?>
-												<div class="row">
-													<div class="col-sm-6">
-														<ul class="card-info-list">
-															<?php foreach ( $col1 as $li_text ) : ?>
-																<?php
-																$clean_li = trim( preg_replace( '/^<p[^>]*>(.*?)<\/p>$/is', '$1', trim( $li_text ) ) );
-																$plain_check = trim( wp_strip_all_tags( html_entity_decode( $clean_li, ENT_QUOTES, 'UTF-8' ) ) );
-																$plain_check = trim( str_replace( array( "\xc2\xa0", '&nbsp;' ), ' ', $plain_check ) );
-																if ( '' === $plain_check ) {
-																	continue;
-																}
-																?>
-																<li class="card-info">
-																	<img src="<?php echo esc_url( $tick_icon_url ); ?>" alt="" />
-																	<p><?php echo wp_kses_post( $clean_li ); ?></p>
-																</li>
-															<?php endforeach; ?>
-														</ul>
-													</div>
-													<div class="col-sm-6">
-														<ul class="card-info-list">
-															<?php foreach ( $col2 as $li_text ) : ?>
-																<?php
-																$clean_li = trim( preg_replace( '/^<p[^>]*>(.*?)<\/p>$/is', '$1', trim( $li_text ) ) );
-																$plain_check = trim( wp_strip_all_tags( html_entity_decode( $clean_li, ENT_QUOTES, 'UTF-8' ) ) );
-																$plain_check = trim( str_replace( array( "\xc2\xa0", '&nbsp;' ), ' ', $plain_check ) );
-																if ( '' === $plain_check ) {
-																	continue;
-																}
-																?>
-																<li class="card-info">
-																	<img src="<?php echo esc_url( $tick_icon_url ); ?>" alt="" />
-																	<p><?php echo wp_kses_post( $clean_li ); ?></p>
-																</li>
-															<?php endforeach; ?>
-														</ul>
-													</div>
-												</div>
-											<?php else : ?>
-												<ul class="card-info-list">
-													<?php foreach ( $li_items as $li_text ) : ?>
-														<?php
-														$clean_li = trim( preg_replace( '/^<p[^>]*>(.*?)<\/p>$/is', '$1', trim( $li_text ) ) );
-														$plain_check = trim( wp_strip_all_tags( html_entity_decode( $clean_li, ENT_QUOTES, 'UTF-8' ) ) );
-														$plain_check = trim( str_replace( array( "\xc2\xa0", '&nbsp;' ), ' ', $plain_check ) );
-														if ( '' === $plain_check ) {
-															continue;
-														}
-														?>
-														<li class="card-info">
-															<img src="<?php echo esc_url( $tick_icon_url ); ?>" alt="" />
-															<p><?php echo wp_kses_post( $clean_li ); ?></p>
-														</li>
-													<?php endforeach; ?>
-												</ul>
-											<?php endif; ?>
+											<ul class="card-info-list">
+												<?php foreach ( $li_items as $li_text ) : ?>
+													<?php
+													$clean_li = trim( preg_replace( '/^<p[^>]*>(.*?)<\/p>$/is', '$1', trim( $li_text ) ) );
+													$plain_check = trim( wp_strip_all_tags( html_entity_decode( $clean_li, ENT_QUOTES, 'UTF-8' ) ) );
+													$plain_check = trim( str_replace( array( "\xc2\xa0", '&nbsp;' ), ' ', $plain_check ) );
+													if ( '' === $plain_check ) {
+														continue;
+													}
+													?>
+													<li class="card-info">
+														<img src="<?php echo esc_url( $tick_icon_url ); ?>" alt="" />
+														<p><?php echo wp_kses_post( $clean_li ); ?></p>
+													</li>
+												<?php endforeach; ?>
+											</ul>
 										<?php else : ?>
 											<div class="cel-card-body">
 												<?php echo wp_kses_post( $items_raw ); ?>
