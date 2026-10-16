@@ -1174,6 +1174,33 @@ margin: 0 auto 10px;
     font-size: 16px;
     padding: 12px 20px;
   }
+
+  /* About Us page mobile adjustments */
+  .our-story {
+    padding: 45px 0 50px;
+  }
+  .our-img {
+    margin-bottom: 25px;
+  }
+  .our-card {
+    padding: 18px 12px;
+  }
+  .our-card-txt p {
+    font-size: 14.5px;
+  }
+  .custom-container-sec,
+  .a-place {
+    padding: 45px 0 55px;
+  }
+  .custom-container-sec .wp-block-columns,
+  .a-place .row {
+    gap: 20px;
+  }
+  .custom-container-sec .wp-block-image img,
+  .place-img img {
+    height: 260px;
+  }
 }
+
 
 

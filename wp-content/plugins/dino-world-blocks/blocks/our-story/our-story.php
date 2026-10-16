@@ -202,11 +202,15 @@ if ( empty( $cards ) && ! empty( $block_data ) ) {
 		}
 	}
 }
+
+$is_admin_preview = ! empty( $is_preview ) || is_admin();
+$aos_attr         = ! $is_admin_preview ? ' data-aos="' . esc_attr( $is_right ? 'fade-right' : 'fade-left' ) . '"' : '';
 ?>
 
-<section id="<?php echo esc_attr( $block_id ); ?>" class="<?php echo esc_attr( $class_name ); ?>" data-aos="<?php echo esc_attr( $is_right ? 'fade-right' : 'fade-left' ); ?>">
+
+<section id="<?php echo esc_attr( $block_id ); ?>" class="<?php echo esc_attr( $class_name ); ?>"<?php echo $aos_attr; ?>>
 	<div class="container">
-		<div class="row align-items-center">
+		<div class="row align-items-start g-4 g-xl-5">
 			<?php if ( ! empty( $main_image['url'] ) ) : ?>
 				<div class="<?php echo esc_attr( $img_col_class ); ?>">
 					<div class="our-img">
@@ -245,10 +249,10 @@ if ( empty( $cards ) && ! empty( $block_data ) ) {
 						$col_class = 'col-sm-4';
 					}
 					?>
-					<div class="row">
+					<div class="row g-3 our-cards-row">
 						<?php foreach ( $cards as $card_item ) : ?>
-							<div class="<?php echo esc_attr( $col_class ); ?>">
-								<div class="our-card">
+							<div class="<?php echo esc_attr( $col_class ); ?> d-flex">
+								<div class="our-card w-100">
 									<?php if ( ! empty( $card_item['icon']['url'] ) ) : ?>
 										<div class="card-img">
 											<img src="<?php echo esc_url( $card_item['icon']['url'] ); ?>" alt="<?php echo esc_attr( ! empty( $card_item['icon']['alt'] ) ? $card_item['icon']['alt'] : ( ! empty( $card_item['text'] ) ? $card_item['text'] : '' ) ); ?>" />
