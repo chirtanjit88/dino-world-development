@@ -960,25 +960,123 @@ h6.is-style-green-heading {
   position: absolute;
 }
 
-.test-card {
-  background-color: var(--text-color);
-  padding: 20px;
+.test-card,
+.testa-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 240px;
+  padding: 24px 22px;
   border-radius: 20px;
+  background-color: var(--text-color, #ffffff);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
 
+.test-card:hover,
+.testa-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
+}
+
+.testa-card {
+  border: 1px solid rgba(107, 142, 35, 0.22);
+}
+
+.testa-card:hover {
+  border-color: var(--primary-color, #6B8E23);
+}
+
+.card-header-row {
+  margin-bottom: 10px;
+}
+
+.google-card-badge {
+  background: rgba(66, 133, 244, 0.08);
+  border: 1px solid rgba(66, 133, 244, 0.2);
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1a73e8;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.2px;
+}
+
+.google-summary-pill {
+  background: #ffffff;
+  padding: 8px 22px;
+  border-radius: 50px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(107, 142, 35, 0.22);
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.google-summary-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  border-color: #4285F4;
+}
+
+.google-summary-pill .rating-val {
+  font-family: "Afacad Flux", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #233400;
+}
+
+.google-summary-pill .rating-stars {
+  color: #CD8143;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.google-summary-pill .rating-count {
+  font-family: "Poppins", sans-serif;
+  font-size: 13.5px;
+  color: #555555;
+}
+
+.card-cntn {
+  flex-grow: 1;
 }
 
 .card-cntn p {
-  font-size: 16px;
+  font-size: 15px;
+  line-height: 1.65;
   font-family: "Poppins", sans-serif;
   color: #434843;
-  margin: 20px 0;
+  margin: 10px 0 16px;
 }
 
-.test-name p {
+.test-name .author-text {
   color: #061B0E;
   font-family: "Afacad Flux", sans-serif;
-  font-size: 22px;
-  font-weight: 500;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.author-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.author-link:hover .author-text {
+  color: var(--primary-color, #6B8E23);
+}
+
+.review-date {
+  font-size: 12px;
+  color: #888888;
+  font-family: "Poppins", sans-serif;
+  margin-top: 2px;
+}
+
+.reviewer-avatar {
+  border: 1.5px solid #eef1ea;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .splide__pagination__page {
@@ -1181,26 +1279,7 @@ h6.is-style-green-heading {
   text-align: center;
 }
 
-.testa-card {
-  padding: 20px;
-  border-radius: 20px;
-  border: 1px solid var(--dark-txt);
-
-}
-
-.acard-cntn p {
-  font-size: 16px;
-  font-family: "Poppins", sans-serif;
-  color: #434843;
-  margin: 20px 0;
-}
-
-.test-name p {
-  color: #061B0E;
-  font-family: "Afacad Flux", sans-serif;
-  font-size: 22px;
-  font-weight: 500;
-}
+/* .testa-card styled alongside .test-card above */
 
 .testimoniala-sec .splide__arrow {
   background: #233400 !important;

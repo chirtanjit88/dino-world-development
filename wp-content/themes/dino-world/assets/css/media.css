@@ -1200,6 +1200,19 @@ margin: 0 auto 10px;
   .place-img img {
     height: 260px;
   }
+
+  /* Testimonials and Google review mobile */
+  .google-summary-pill {
+    padding: 6px 15px;
+  }
+  .google-summary-pill .rating-count {
+    font-size: 12px;
+  }
+  .test-card,
+  .testa-card {
+    padding: 20px 16px;
+    min-height: auto;
+  }
 }
 
 
