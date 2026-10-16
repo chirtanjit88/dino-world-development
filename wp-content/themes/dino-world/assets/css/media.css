@@ -523,7 +523,7 @@ display: none;
 
     /* EXCURSION HIGHLIGHTS--- */
     .xh-card{
-        margin-bottom: 24px;
+        margin-bottom: 0;
     }
    /* gallery page ------- */
       .gallery-grid {
@@ -531,7 +531,7 @@ display: none;
     }
 
     /* About us page---- */
-    .why-card{
+    .why-family .why-card{
       margin-bottom: 20px;
     }
 
@@ -1146,5 +1146,34 @@ margin: 0 auto 10px;
   .post-nav-card {
     padding: 16px 18px;
   }
+
+  /* Excursion Packages mobile adjustments */
+  .xp-card {
+    padding: 26px 20px;
+    border-radius: 16px;
+  }
+  .xp-hd p {
+    font-size: 24px;
+  }
+  .xp-sub-hd p {
+    font-size: 14.5px;
+    margin-bottom: 16px;
+  }
+  .xp-inf p {
+    font-size: 16px;
+  }
+  .xp-price p {
+    font-size: 22px;
+  }
+  .xp-info {
+    font-size: 13.5px;
+  }
+  .xp-btn .primary-btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 16px;
+    padding: 12px 20px;
+  }
 }
+
 

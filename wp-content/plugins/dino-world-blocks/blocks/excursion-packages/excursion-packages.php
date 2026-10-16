@@ -11,6 +11,8 @@
  *     - feature_text (Text)
  *   - price_text (Text)
  *   - is_featured (True/False)
+ *   - information (WYSIWYG Editor)
+ *   - button (Link)
  *
  * @param array  $block      The block settings and attributes.
  * @param string $content    The block inner HTML (empty).
@@ -81,6 +83,48 @@ $parse_features = function( $val ) {
 	return $result;
 };
 
+// Helper to normalize link array / string / serialized data
+$parse_link = function( $val, $default_title = '' ) {
+	if ( empty( $val ) ) {
+		return null;
+	}
+	if ( is_string( $val ) && ( strpos( $val, 'a:' ) === 0 || strpos( $val, 's:' ) === 0 ) ) {
+		$unserialized = @unserialize( $val );
+		if ( false !== $unserialized ) {
+			$val = $unserialized;
+		}
+	}
+	if ( is_string( $val ) && strpos( $val, '{' ) === 0 ) {
+		$decoded = json_decode( $val, true );
+		if ( is_array( $decoded ) ) {
+			$val = $decoded;
+		}
+	}
+
+	$link = array(
+		'url'    => '',
+		'title'  => $default_title,
+		'target' => '_self',
+	);
+
+	if ( is_array( $val ) ) {
+		$link['url']    = ! empty( $val['url'] ) ? $val['url'] : ( ! empty( $val['link'] ) ? $val['link'] : '' );
+		$link['title']  = ! empty( $val['title'] ) ? $val['title'] : ( ! empty( $val['text'] ) ? $val['text'] : ( ! empty( $val['label'] ) ? $val['label'] : $default_title ) );
+		$link['target'] = ! empty( $val['target'] ) ? $val['target'] : '_self';
+	} elseif ( is_string( $val ) ) {
+		$link['url']   = trim( $val );
+		$link['title'] = ! empty( $default_title ) ? $default_title : __( 'Book Now', 'dino-world' );
+	}
+
+	if ( empty( $link['url'] ) ) {
+		return null;
+	}
+	if ( empty( $link['title'] ) ) {
+		$link['title'] = ! empty( $default_title ) ? $default_title : __( 'Book Now', 'dino-world' );
+	}
+	return $link;
+};
+
 // 2. Packages List
 $packages = array();
 
@@ -92,6 +136,9 @@ if ( function_exists( 'have_rows' ) && have_rows( 'packages' ) ) {
 		$subtitle    = get_sub_field( 'subtitle' ) ?: ( get_sub_field( 'package_subtitle' ) ?: get_sub_field( 'sub_heading' ) );
 		$price       = get_sub_field( 'price_text' ) ?: ( get_sub_field( 'price' ) ?: get_sub_field( 'pricing' ) );
 		$is_featured = (bool) ( get_sub_field( 'is_featured' ) ?: ( get_sub_field( 'featured' ) ?: get_sub_field( 'highlighted' ) ) );
+		$information = get_sub_field( 'information' ) ?: ( get_sub_field( 'info' ) ?: ( get_sub_field( 'package_info' ) ?: get_sub_field( 'description' ) ) );
+		$raw_button  = get_sub_field( 'button' ) ?: ( get_sub_field( 'btn' ) ?: ( get_sub_field( 'link' ) ?: get_sub_field( 'action_button' ) ) );
+		$button      = $parse_link( $raw_button, __( 'Book Now', 'dino-world' ) );
 
 		$feats = array();
 		if ( have_rows( 'features' ) ) {
@@ -107,13 +154,15 @@ if ( function_exists( 'have_rows' ) && have_rows( 'packages' ) ) {
 			$feats = $parse_features( $raw_f );
 		}
 
-		if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) ) {
+		if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) || ! empty( $information ) || ! empty( $button ) ) {
 			$packages[] = array(
 				'title'       => $title,
 				'subtitle'    => $subtitle,
 				'features'    => $feats,
 				'price'       => $price,
 				'is_featured' => $is_featured,
+				'information' => $information,
+				'button'      => $button,
 			);
 		}
 	}
@@ -131,16 +180,21 @@ if ( empty( $packages ) && function_exists( 'get_field' ) ) {
 					$subtitle    = ! empty( $item['subtitle'] ) ? $item['subtitle'] : ( ! empty( $item['package_subtitle'] ) ? $item['package_subtitle'] : ( ! empty( $item['sub_heading'] ) ? $item['sub_heading'] : '' ) );
 					$price       = ! empty( $item['price_text'] ) ? $item['price_text'] : ( ! empty( $item['price'] ) ? $item['price'] : ( ! empty( $item['pricing'] ) ? $item['pricing'] : '' ) );
 					$is_featured = ! empty( $item['is_featured'] ) || ! empty( $item['featured'] ) || ! empty( $item['highlighted'] );
+					$information = ! empty( $item['information'] ) ? $item['information'] : ( ! empty( $item['info'] ) ? $item['info'] : ( ! empty( $item['package_info'] ) ? $item['package_info'] : ( ! empty( $item['description'] ) ? $item['description'] : '' ) ) );
+					$raw_button  = ! empty( $item['button'] ) ? $item['button'] : ( ! empty( $item['btn'] ) ? $item['btn'] : ( ! empty( $item['link'] ) ? $item['link'] : null ) );
+					$button      = $parse_link( $raw_button, __( 'Book Now', 'dino-world' ) );
 					$raw_f       = ! empty( $item['features'] ) ? $item['features'] : ( ! empty( $item['items'] ) ? $item['items'] : '' );
 					$feats       = $parse_features( $raw_f );
 
-					if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) ) {
+					if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) || ! empty( $information ) || ! empty( $button ) ) {
 						$packages[] = array(
 							'title'       => $title,
 							'subtitle'    => $subtitle,
 							'features'    => $feats,
 							'price'       => $price,
 							'is_featured' => $is_featured,
+							'information' => $information,
+							'button'      => $button,
 						);
 					}
 				}
@@ -175,6 +229,11 @@ if ( empty( $packages ) && ! empty( $block_data ) ) {
 		$subtitle    = '';
 		$price       = '';
 		$is_featured = false;
+		$information = '';
+		$button_data = null;
+		$btn_url     = '';
+		$btn_title   = '';
+		$btn_target  = '_self';
 		$feats       = array();
 
 		foreach ( $block_data as $k => $v ) {
@@ -191,10 +250,34 @@ if ( empty( $packages ) && ! empty( $block_data ) ) {
 			if ( preg_match( "/packages_{$i}_(is_featured|featured|highlighted)$/", $k ) ) {
 				$is_featured = (bool) $v;
 			}
+			if ( preg_match( "/packages_{$i}_(information|info|package_info|description)$/", $k ) ) {
+				$information = $v;
+			}
+			if ( preg_match( "/packages_{$i}_(button|btn|link|action_button)$/", $k ) ) {
+				$button_data = $v;
+			}
+			if ( preg_match( "/packages_{$i}_button_url$/", $k ) ) {
+				$btn_url = $v;
+			}
+			if ( preg_match( "/packages_{$i}_button_title$/", $k ) ) {
+				$btn_title = $v;
+			}
+			if ( preg_match( "/packages_{$i}_button_target$/", $k ) ) {
+				$btn_target = $v;
+			}
 			if ( preg_match( "/packages_{$i}_features_\d+_(feature_text|text|item|title)$/", $k ) && ! empty( $v ) ) {
 				$feats[] = $v;
 			}
 		}
+
+		if ( empty( $button_data ) && ! empty( $btn_url ) ) {
+			$button_data = array(
+				'url'    => $btn_url,
+				'title'  => $btn_title,
+				'target' => $btn_target,
+			);
+		}
+		$button = $parse_link( $button_data, __( 'Book Now', 'dino-world' ) );
 
 		if ( empty( $feats ) ) {
 			foreach ( $block_data as $k => $v ) {
@@ -205,19 +288,23 @@ if ( empty( $packages ) && ! empty( $block_data ) ) {
 			}
 		}
 
-		if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) ) {
+		if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) || ! empty( $information ) || ! empty( $button ) ) {
 			$packages[] = array(
 				'title'       => $title,
 				'subtitle'    => $subtitle,
 				'features'    => $feats,
 				'price'       => $price,
 				'is_featured' => $is_featured,
+				'information' => $information,
+				'button'      => $button,
 			);
 		}
 	}
 }
 
-$green_tick_url = get_template_directory_uri() . '/assets/image/green-tick.png';
+$green_tick_url  = get_template_directory_uri() . '/assets/image/green-tick.png';
+$arrow_icon_url  = get_template_directory_uri() . '/assets/image/right-arrow.png';
+$is_admin_preview = ! empty( $is_preview ) || is_admin();
 ?>
 
 <section id="<?php echo esc_attr( $block_id ); ?>" class="<?php echo esc_attr( $class_name ); ?>">
@@ -227,15 +314,17 @@ $green_tick_url = get_template_directory_uri() . '/assets/image/green-tick.png';
 		<?php endif; ?>
 
 		<?php if ( ! empty( $packages ) ) : ?>
-			<div class="row">
+			<div class="row justify-content-center g-4">
 				<?php
 				$total_pkgs = count( $packages );
-				if ( 3 === $total_pkgs ) {
+				if ( 1 === $total_pkgs ) {
+					$col_class = 'col-lg-6 col-md-8 col-sm-10';
+				} elseif ( 2 === $total_pkgs ) {
+					$col_class = 'col-lg-5 col-md-6';
+				} elseif ( 3 === $total_pkgs ) {
 					$col_class = 'col-lg-4 col-md-6';
 				} elseif ( 4 === $total_pkgs ) {
 					$col_class = 'col-lg-3 col-md-6';
-				} elseif ( 2 === $total_pkgs ) {
-					$col_class = 'col-lg-6 col-md-6';
 				} else {
 					$col_class = 'col-lg-4 col-md-6';
 				}
@@ -245,46 +334,74 @@ $green_tick_url = get_template_directory_uri() . '/assets/image/green-tick.png';
 					if ( ! empty( $item['is_featured'] ) ) {
 						$card_class .= ' xp-card1';
 					}
+					$delay_attr = ! $is_admin_preview ? ' data-aos="fade-up" data-aos-delay="' . esc_attr( $index * 100 ) . '"' : '';
 					?>
-					<div class="<?php echo esc_attr( $col_class ); ?>" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( $index * 100 ); ?>">
-						<div class="<?php echo esc_attr( $card_class ); ?>">
-							<?php if ( ! empty( $item['title'] ) ) : ?>
-								<div class="xp-hd">
-									<p><?php echo esc_html( $item['title'] ); ?></p>
-								</div>
-							<?php endif; ?>
-
-							<?php if ( ! empty( $item['subtitle'] ) ) : ?>
-								<div class="xp-sub-hd">
-									<p><?php echo esc_html( $item['subtitle'] ); ?></p>
-								</div>
-							<?php endif; ?>
-
-							<?php if ( ! empty( $item['features'] ) ) : ?>
-								<?php foreach ( $item['features'] as $f_text ) : ?>
-									<div class="xp-txt">
-										<div class="xp-img">
-											<img src="<?php echo esc_url( $green_tick_url ); ?>" alt="" />
-										</div>
-										<div class="xp-inf">
-											<p><?php echo esc_html( $f_text ); ?></p>
-										</div>
+					<div class="<?php echo esc_attr( $col_class ); ?> d-flex"<?php echo $delay_attr; ?>>
+						<div class="<?php echo esc_attr( $card_class ); ?> w-100">
+							<div class="xp-card-top">
+								<?php if ( ! empty( $item['title'] ) ) : ?>
+									<div class="xp-hd">
+										<p><?php echo esc_html( $item['title'] ); ?></p>
 									</div>
-								<?php endforeach; ?>
-							<?php endif; ?>
+								<?php endif; ?>
 
-							<?php if ( ! empty( $item['price'] ) ) : ?>
-								<?php
-								$price_output = $item['price'];
-								// If price contains numbers like $22 and does not already have <span>, wrap the price number with <span>
-								if ( strpos( $price_output, '<span>' ) === false ) {
-									$price_output = preg_replace( '/(\$\d+)/', '<span>$1</span>', $price_output );
-								}
-								?>
-								<div class="xp-price">
-									<p><?php echo wp_kses_post( $price_output ); ?></p>
-								</div>
-							<?php endif; ?>
+								<?php if ( ! empty( $item['subtitle'] ) ) : ?>
+									<div class="xp-sub-hd">
+										<p><?php echo esc_html( $item['subtitle'] ); ?></p>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $item['features'] ) ) : ?>
+									<div class="xp-features-list">
+										<?php foreach ( $item['features'] as $f_text ) : ?>
+											<div class="xp-txt">
+												<div class="xp-img">
+													<img src="<?php echo esc_url( $green_tick_url ); ?>" alt="" />
+												</div>
+												<div class="xp-inf">
+													<p><?php echo esc_html( $f_text ); ?></p>
+												</div>
+											</div>
+										<?php endforeach; ?>
+									</div>
+								<?php endif; ?>
+							</div>
+
+							<div class="xp-card-bottom">
+								<?php if ( ! empty( $item['price'] ) ) : ?>
+									<?php
+									$price_output = $item['price'];
+									// If price contains numbers like $22 and does not already have <span>, wrap with <span>
+									if ( strpos( $price_output, '<span>' ) === false ) {
+										$price_output = preg_replace( '/(\$\d+(\.\d+)?)/', '<span>$1</span>', $price_output );
+									}
+									?>
+									<div class="xp-price">
+										<p><?php echo wp_kses_post( $price_output ); ?></p>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $item['information'] ) ) : ?>
+									<div class="xp-info">
+										<?php
+										$info_content = $item['information'];
+										if ( strpos( $info_content, '<p>' ) === false && strpos( $info_content, '<div' ) === false ) {
+											$info_content = wpautop( $info_content );
+										}
+										echo wp_kses_post( $info_content );
+										?>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $item['button'] ) && ! empty( $item['button']['url'] ) ) : ?>
+									<div class="xp-btn">
+										<a class="primary-btn" href="<?php echo esc_url( $item['button']['url'] ); ?>" target="<?php echo esc_attr( $item['button']['target'] ); ?>">
+											<?php echo esc_html( $item['button']['title'] ); ?>
+											<img src="<?php echo esc_url( $arrow_icon_url ); ?>" alt="" />
+										</a>
+									</div>
+								<?php endif; ?>
+							</div>
 						</div>
 					</div>
 				<?php endforeach; ?>

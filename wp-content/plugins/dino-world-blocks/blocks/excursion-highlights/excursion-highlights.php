@@ -173,33 +173,33 @@ if ( empty( $cards ) && ! empty( $block_data ) ) {
 		<?php endif; ?>
 
 		<?php if ( ! empty( $cards ) ) : ?>
-			<div class="row">
+			<div class="row justify-content-center g-4">
 				<?php
 				$total_cards = count( $cards );
 				if ( 4 === $total_cards ) {
-					$col_class = 'col-lg-3 col-sm-6';
+					$col_class = 'col-12 col-sm-6 col-lg-3';
 				} elseif ( 3 === $total_cards ) {
-					$col_class = 'col-lg-4 col-sm-6';
+					$col_class = 'col-12 col-sm-6 col-lg-4';
 				} elseif ( 2 === $total_cards ) {
-					$col_class = 'col-lg-6 col-sm-6';
+					$col_class = 'col-12 col-sm-6 col-lg-6';
 				} elseif ( 5 === $total_cards ) {
-					$col_class = 'col-20';
+					$col_class = 'col-12 col-sm-6 col-lg-20 col-20';
 				} else {
-					$col_class = 'col-lg-3 col-sm-6';
+					$col_class = 'col-12 col-sm-6 col-lg-3';
 				}
 
 				foreach ( $cards as $index => $item ) :
-					$aos_anim = ( $index < ceil( $total_cards / 2 ) ) ? 'zoom-in-right' : 'zoom-in-left';
+					$default_fallback_img = get_template_directory_uri() . '/assets/image/EXCURSION' . ( ( $index % 4 ) + 1 ) . '.png';
+					$img_src              = ! empty( $item['image'] ) ? $item['image'] : $default_fallback_img;
+					$img_alt              = ! empty( $item['alt'] ) ? $item['alt'] : ( ! empty( $item['title'] ) ? $item['title'] : 'Excursion Highlight' );
 					?>
-					<div class="<?php echo esc_attr( $col_class ); ?>" data-aos="<?php echo esc_attr( $aos_anim ); ?>" data-aos-delay="<?php echo esc_attr( $index * 100 ); ?>">
-						<div class="xh-card">
-							<?php if ( ! empty( $item['image'] ) ) : ?>
-								<div class="xh-img">
-									<img src="<?php echo esc_url( $item['image'] ); ?>" alt="<?php echo esc_attr( ! empty( $item['alt'] ) ? $item['alt'] : ( ! empty( $item['title'] ) ? $item['title'] : 'Excursion Highlight' ) ); ?>" />
-								</div>
-							<?php endif; ?>
+					<div class="<?php echo esc_attr( $col_class ); ?> d-flex" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( ( $index % 4 ) * 100 ); ?>">
+						<div class="xh-card w-100 d-flex flex-column">
+							<div class="xh-img">
+								<img src="<?php echo esc_url( $img_src ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" loading="lazy" />
+							</div>
 
-							<div class="xh-txt">
+							<div class="xh-txt d-flex flex-column flex-grow-1">
 								<?php if ( ! empty( $item['title'] ) ) : ?>
 									<div class="xh-hd">
 										<p><?php echo esc_html( $item['title'] ); ?></p>
@@ -207,7 +207,7 @@ if ( empty( $cards ) && ! empty( $block_data ) ) {
 								<?php endif; ?>
 
 								<?php if ( ! empty( $item['description'] ) ) : ?>
-									<div class="xh-para">
+									<div class="xh-para flex-grow-1">
 										<?php if ( strpos( $item['description'], '<p>' ) !== false ) : ?>
 											<?php echo wp_kses_post( $item['description'] ); ?>
 										<?php else : ?>

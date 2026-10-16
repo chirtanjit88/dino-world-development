@@ -3,7 +3,7 @@
   "apiVersion": 2,
   "name": "dino-world/excursion-packages",
   "title": "Excursion Packages",
-  "description": "Excursion packages section with pricing cards, features list (with green tick icons), and price per student.",
+  "description": "Excursion packages section with pricing cards, features list (with green tick icons), price per student, additional information/notes, and action button.",
   "category": "dino-world-blocks",
   "icon": "tickets-alt",
   "keywords": [

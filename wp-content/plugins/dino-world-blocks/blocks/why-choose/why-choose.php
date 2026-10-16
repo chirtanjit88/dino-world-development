@@ -159,46 +159,56 @@ if ( empty( $cards ) && ! empty( $block_data ) ) {
 		<?php endif; ?>
 
 		<?php if ( ! empty( $cards ) ) : ?>
-			<div class="row">
+			<div class="row justify-content-center g-4">
 				<?php
 				$total_cards = count( $cards );
-				if ( 5 === $total_cards ) {
-					$col_class = 'col-20';
+				if ( 7 === $total_cards ) {
+					$col_class = 'col-12 col-sm-6 col-md-6 col-lg-3';
+				} elseif ( 8 === $total_cards ) {
+					$col_class = 'col-12 col-sm-6 col-md-6 col-lg-3';
+				} elseif ( 6 === $total_cards ) {
+					$col_class = 'col-12 col-sm-6 col-md-4 col-lg-4';
+				} elseif ( 5 === $total_cards ) {
+					$col_class = 'col-12 col-sm-6 col-md-4 col-lg-20 col-20';
 				} elseif ( 4 === $total_cards ) {
-					$col_class = 'col-lg-3 col-md-6 col-sm-6';
+					$col_class = 'col-12 col-sm-6 col-md-6 col-lg-3';
 				} elseif ( 3 === $total_cards ) {
-					$col_class = 'col-lg-4 col-md-4 col-sm-6';
+					$col_class = 'col-12 col-sm-6 col-md-4 col-lg-4';
 				} elseif ( 2 === $total_cards ) {
-					$col_class = 'col-lg-6 col-md-6';
+					$col_class = 'col-12 col-sm-6 col-md-6 col-lg-6';
+				} elseif ( 1 === $total_cards ) {
+					$col_class = 'col-12 col-md-8 col-lg-6';
 				} else {
-					$col_class = 'col-20';
+					$col_class = 'col-12 col-sm-6 col-md-6 col-lg-3';
 				}
 
 				foreach ( $cards as $index => $item ) :
 					?>
-					<div class="<?php echo esc_attr( $col_class ); ?>" data-aos="fade-left" data-aos-delay="<?php echo esc_attr( $index * 100 ); ?>">
-						<div class="why-card">
+					<div class="<?php echo esc_attr( $col_class ); ?> d-flex" data-aos="fade-up" data-aos-delay="<?php echo esc_attr( ( $index % 4 ) * 100 ); ?>">
+						<div class="why-card w-100 d-flex flex-column text-center">
 							<?php if ( ! empty( $item['icon'] ) ) : ?>
 								<div class="wh-img">
 									<img src="<?php echo esc_url( $item['icon'] ); ?>" alt="<?php echo esc_attr( ! empty( $item['title'] ) ? $item['title'] : 'Why Choose Feature' ); ?>" />
 								</div>
 							<?php endif; ?>
 
-							<?php if ( ! empty( $item['title'] ) ) : ?>
-								<div class="wh-hd">
-									<p><?php echo esc_html( $item['title'] ); ?></p>
-								</div>
-							<?php endif; ?>
+							<div class="wh-txt d-flex flex-column flex-grow-1">
+								<?php if ( ! empty( $item['title'] ) ) : ?>
+									<div class="wh-hd">
+										<p><?php echo esc_html( $item['title'] ); ?></p>
+									</div>
+								<?php endif; ?>
 
-							<?php if ( ! empty( $item['description'] ) ) : ?>
-								<div class="wh-para">
-									<?php if ( strpos( $item['description'], '<p>' ) !== false ) : ?>
-										<?php echo wp_kses_post( $item['description'] ); ?>
-									<?php else : ?>
-										<p><?php echo wp_kses_post( nl2br( $item['description'] ) ); ?></p>
-									<?php endif; ?>
-								</div>
-							<?php endif; ?>
+								<?php if ( ! empty( $item['description'] ) ) : ?>
+									<div class="wh-para flex-grow-1">
+										<?php if ( strpos( $item['description'], '<p>' ) !== false ) : ?>
+											<?php echo wp_kses_post( $item['description'] ); ?>
+										<?php else : ?>
+											<p><?php echo wp_kses_post( nl2br( $item['description'] ) ); ?></p>
+										<?php endif; ?>
+									</div>
+								<?php endif; ?>
+							</div>
 						</div>
 					</div>
 				<?php endforeach; ?>
