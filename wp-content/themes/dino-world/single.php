@@ -76,7 +76,6 @@ $default_thumb_url = get_template_directory_uri() . '/assets/image/Life-size-Din
 					<!-- Post Meta Bar with icons -->
 					<div class="single-post-meta d-flex flex-wrap align-items-center justify-content-center gap-4">
 						<div class="meta-item author-meta d-flex align-items-center gap-2">
-							<?php echo get_avatar( $author_id, 32, '', esc_attr( $author_name ), array( 'class' => 'author-thumb rounded-circle' ) ); ?>
 							<span><?php esc_html_e( 'By', 'dino-world' ); ?> <strong><?php echo esc_html( $author_name ); ?></strong></span>
 						</div>
 						<div class="meta-item d-flex align-items-center gap-2">

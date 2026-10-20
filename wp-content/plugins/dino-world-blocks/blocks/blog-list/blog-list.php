@@ -38,18 +38,76 @@ if ( get_query_var( 'paged' ) ) {
 
 $posts_per_page = 6; // 6 cards per page for standard 3-column grid
 
-// 2. Identify latest featured post to avoid duplicate rendering in the grid
-$latest_featured = get_posts(
+// 2. Identify active featured post to avoid duplicate rendering in the grid
+$featured_post_id = 0;
+
+// Priority A: Check if a post is marked with ACF 'featured' checkbox = 'yes'
+$feat_query = get_posts(
 	array(
 		'post_type'      => 'post',
 		'posts_per_page' => 1,
 		'post_status'    => 'publish',
+		'meta_query'     => array(
+			'relation' => 'OR',
+			array(
+				'key'     => 'featured',
+				'value'   => '"yes"',
+				'compare' => 'LIKE',
+			),
+			array(
+				'key'     => 'featured',
+				'value'   => 'yes',
+				'compare' => '=',
+			),
+			array(
+				'key'     => 'featured',
+				'value'   => '1',
+				'compare' => '=',
+			),
+		),
 		'orderby'        => 'date',
 		'order'          => 'DESC',
 		'fields'         => 'ids',
 	)
 );
-$exclude_ids = ! empty( $latest_featured ) ? $latest_featured : array();
+if ( ! empty( $feat_query ) ) {
+	$featured_post_id = $feat_query[0];
+}
+
+// Priority B: Check if the featured-blog block on the current page selected a specific post
+if ( ! $featured_post_id ) {
+	$current_page_id = get_the_ID();
+	if ( $current_page_id ) {
+		$page_blocks = parse_blocks( get_post_field( 'post_content', $current_page_id ) );
+		foreach ( $page_blocks as $pb ) {
+			if ( 'dino-world/featured-blog' === $pb['blockName'] ) {
+				if ( ! empty( $pb['attrs']['data']['select_specific_post'] ) ) {
+					$featured_post_id = (int) $pb['attrs']['data']['select_specific_post'];
+					break;
+				}
+			}
+		}
+	}
+}
+
+// Priority C: Fallback to latest post ID
+if ( ! $featured_post_id ) {
+	$latest_fallback = get_posts(
+		array(
+			'post_type'      => 'post',
+			'posts_per_page' => 1,
+			'post_status'    => 'publish',
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'fields'         => 'ids',
+		)
+	);
+	if ( ! empty( $latest_fallback ) ) {
+		$featured_post_id = $latest_fallback[0];
+	}
+}
+
+$exclude_ids = $featured_post_id ? array( $featured_post_id ) : array();
 
 // 3. Query published blog posts for the grid
 $blog_query = new WP_Query(

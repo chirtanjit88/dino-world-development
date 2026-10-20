@@ -128,7 +128,39 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchKeyword = '';
 
     function applyFilters() {
-        const blogCols = document.querySelectorAll('.blog-col');
+        // 1. Featured Hero Area
+        const mainHero = document.querySelector('.featured-blog-hero.main-featured-hero');
+        const catHeroes = document.querySelectorAll('.featured-blog-hero.category-featured-hero');
+
+        if (mainHero) {
+            const mainTitle = (mainHero.getAttribute('data-title') || '').toLowerCase();
+            const mainSearchMatch = !searchKeyword || mainTitle.indexOf(searchKeyword) !== -1;
+
+            if (currentCat === 'all' && mainSearchMatch) {
+                mainHero.classList.remove('d-none');
+                mainHero.style.removeProperty('display');
+            } else {
+                mainHero.classList.add('d-none');
+                mainHero.style.setProperty('display', 'none', 'important');
+            }
+        }
+
+        catHeroes.forEach(hero => {
+            const heroCat = hero.getAttribute('data-featured-category');
+            const heroTitle = (hero.getAttribute('data-title') || '').toLowerCase();
+            const heroSearchMatch = !searchKeyword || heroTitle.indexOf(searchKeyword) !== -1;
+
+            if (currentCat !== 'all' && heroCat === currentCat && heroSearchMatch) {
+                hero.classList.remove('d-none');
+                hero.style.removeProperty('display');
+            } else {
+                hero.classList.add('d-none');
+                hero.style.setProperty('display', 'none', 'important');
+            }
+        });
+
+        // 2. Blog Grid Items
+        const blogCols = document.querySelectorAll('.blog-grid-sec .blog-col');
         blogCols.forEach(col => {
             const catAttr = (col.getAttribute('data-cat') || '').trim();
             const cats = catAttr ? catAttr.split(/\s+/) : [];
@@ -145,6 +177,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 col.style.setProperty('display', 'none', 'important');
             }
         });
+
+        if (window.AOS && typeof window.AOS.refresh === 'function') {
+            window.AOS.refresh();
+        }
     }
 
     filterBtns.forEach(btn => {
@@ -163,4 +199,17 @@ document.addEventListener('DOMContentLoaded', function () {
             applyFilters();
         });
     });
+
+    // Check URL parameters (e.g. ?category=family-guides)
+    const urlParams = new URLSearchParams(window.location.search);
+    const catParam = urlParams.get('category') || urlParams.get('cat');
+    if (catParam) {
+        const targetBtn = Array.from(filterBtns).find(btn => btn.getAttribute('data-filter') === catParam);
+        if (targetBtn) {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            targetBtn.classList.add('active');
+            currentCat = catParam;
+            applyFilters();
+        }
+    }
 });
