@@ -309,7 +309,7 @@ function dino_world_register_block_styles() {
 			array(
 				'name'         => 'paragraph-large',
 				'label'        => __( 'Paragraph Large', 'dino-world' ),
-				'inline_style' => '.is-style-paragraph-large, .is-style-w-para { font-size: 24px; color: #000; font-family: "Afacad Flux", sans-serif; text-align: center; font-weight: 500; margin: 22px auto 0; text-transform: capitalize; }',
+				'inline_style' => '.is-style-paragraph-large, .is-style-w-para { font-size: 22px; color: #233400; font-family: "Afacad Flux", sans-serif; text-align: center; font-weight: 500; margin: 22px auto 0; text-transform: none; line-height: 1.5; }',
 			)
 		);
 
