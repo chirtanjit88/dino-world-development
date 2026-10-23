@@ -170,6 +170,13 @@ class Dino_Bootstrap_Navwalker extends Walker_Nav_Menu {
 		$classes   = empty( $item->classes ) ? array() : (array) $item->classes;
 		$classes[] = 'nav-item';
 
+		// Check if this menu item is the "Plan Your Visit" CTA button
+		$is_cta_btn = in_array( 'nav-btn', $classes, true ) || ( ! empty( $item->title ) && stripos( $item->title, 'plan' ) !== false && stripos( $item->title, 'visit' ) !== false );
+
+		if ( $is_cta_btn && ! in_array( 'nav-btn', $classes, true ) ) {
+			$classes[] = 'nav-btn';
+		}
+
 		$class_names = join( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item, $args, $depth ) );
 		$class_names = $class_names ? ' class="' . esc_attr( $class_names ) . '"' : '';
 
@@ -183,12 +190,29 @@ class Dino_Bootstrap_Navwalker extends Walker_Nav_Menu {
 		} else {
 			$atts['rel'] = $item->xfn;
 		}
-		$atts['href'] = ! empty( $item->url ) ? $item->url : '';
 
-		$link_classes = array( 'nav-link' );
-		if ( in_array( 'current-menu-item', $classes, true ) || in_array( 'current_page_item', $classes, true ) ) {
-			$link_classes[] = 'active';
-			$atts['aria-current'] = 'page';
+		$href = ! empty( $item->url ) ? $item->url : '';
+		if ( $is_cta_btn && ( empty( $href ) || '#' === $href || './index.html#plan-visit' === $href ) ) {
+			$plan_page = get_page_by_path( 'plan-your-visit' );
+			if ( $plan_page ) {
+				$href = get_permalink( $plan_page->ID );
+			}
+		}
+		$atts['href'] = $href;
+
+		$link_classes = array();
+		if ( $is_cta_btn ) {
+			$link_classes[] = 'primary-btn';
+			if ( in_array( 'current-menu-item', $classes, true ) || in_array( 'current_page_item', $classes, true ) ) {
+				$link_classes[] = 'active';
+				$atts['aria-current'] = 'page';
+			}
+		} else {
+			$link_classes[] = 'nav-link';
+			if ( in_array( 'current-menu-item', $classes, true ) || in_array( 'current_page_item', $classes, true ) ) {
+				$link_classes[] = 'active';
+				$atts['aria-current'] = 'page';
+			}
 		}
 
 		$atts['class'] = join( ' ', $link_classes );
@@ -205,9 +229,16 @@ class Dino_Bootstrap_Navwalker extends Walker_Nav_Menu {
 		$title = apply_filters( 'the_title', $item->title, $item->ID );
 		$title = apply_filters( 'nav_menu_item_title', $title, $item, $args, $depth );
 
+		// Arrow icon matching HTML template
+		$arrow_markup = '';
+		if ( $is_cta_btn ) {
+			$arrow_url = get_template_directory_uri() . '/assets/image/right-arrow.png';
+			$arrow_markup = ' <img src="' . esc_url( $arrow_url ) . '" alt="" />';
+		}
+
 		$item_output  = $args->before ?? '';
 		$item_output .= '<a' . $attributes . '>';
-		$item_output .= ( $args->link_before ?? '' ) . $title . ( $args->link_after ?? '' );
+		$item_output .= ( $args->link_before ?? '' ) . $title . $arrow_markup . ( $args->link_after ?? '' );
 		$item_output .= '</a>';
 		$item_output .= $args->after ?? '';
 

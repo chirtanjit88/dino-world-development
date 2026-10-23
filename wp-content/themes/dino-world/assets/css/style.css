@@ -220,6 +220,7 @@ h6.is-style-green-heading {
 
 .navbar-nav {
   margin-left: auto;
+  align-items: center;
 }
 
 .nav-link {
@@ -246,6 +247,65 @@ h6.is-style-green-heading {
 
 .nav-btn {
   margin-left: 20px;
+}
+
+/* Nav CTA Button (Plan Your Visit) matching HTML template */
+li.nav-btn,
+.navbar-nav .nav-btn {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+li.nav-btn .primary-btn,
+li.nav-btn .nav-link,
+li.nav-btn a,
+.navbar-nav .nav-btn .primary-btn,
+.navbar-nav .nav-btn .nav-link,
+.navbar-nav .nav-btn a {
+  padding: 10px 20px !important;
+  background-color: var(--hover-color) !important;
+  font-family: "Afacad Flux", sans-serif !important;
+  color: var(--text-color) !important;
+  border-radius: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  width: fit-content !important;
+  text-transform: uppercase !important;
+  font-weight: 600 !important;
+  font-size: 18px !important;
+  gap: 5px !important;
+  margin-right: 0 !important;
+  text-decoration: none !important;
+  transition: background-color 0.25s ease !important;
+}
+
+li.nav-btn .primary-btn:hover,
+li.nav-btn .nav-link:hover,
+li.nav-btn a:hover,
+li.nav-btn .primary-btn.active,
+li.nav-btn .nav-link.active,
+li.nav-btn a.active,
+.navbar-nav .nav-btn .primary-btn:hover,
+.navbar-nav .nav-btn .nav-link:hover,
+.navbar-nav .nav-btn a:hover,
+.navbar-nav .nav-btn .primary-btn.active,
+.navbar-nav .nav-btn .nav-link.active,
+.navbar-nav .nav-btn a.active {
+  background-color: var(--primary-color) !important;
+  color: var(--text-color) !important;
+}
+
+li.nav-btn img,
+.navbar-nav .nav-btn img {
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+li.nav-btn a:hover img,
+.navbar-nav .nav-btn a:hover img {
+  transform: translateX(3px);
 }
 
 /* banner video---- */
