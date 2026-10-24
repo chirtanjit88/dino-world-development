@@ -138,7 +138,16 @@ if ( function_exists( 'have_rows' ) && have_rows( 'packages' ) ) {
 		$is_featured = (bool) ( get_sub_field( 'is_featured' ) ?: ( get_sub_field( 'featured' ) ?: get_sub_field( 'highlighted' ) ) );
 		$information = get_sub_field( 'information' ) ?: ( get_sub_field( 'info' ) ?: ( get_sub_field( 'package_info' ) ?: get_sub_field( 'description' ) ) );
 		$raw_button  = get_sub_field( 'button' ) ?: ( get_sub_field( 'btn' ) ?: ( get_sub_field( 'link' ) ?: get_sub_field( 'action_button' ) ) );
-		$button      = $parse_link( $raw_button, __( 'Book Now', 'dino-world' ) );
+		$button      = $parse_link( $raw_button, __( 'Enquire Now', 'dino-world' ) );
+
+		$enquire_shortcode = get_sub_field( 'enquire_form_shortcode' ) ?: ( get_sub_field( 'form_shortcode' ) ?: ( get_sub_field( 'shortcode' ) ?: '' ) );
+		if ( empty( $enquire_shortcode ) ) {
+			$b_title = ! empty( $button['title'] ) ? $button['title'] : '';
+			$b_url   = ! empty( $button['url'] ) ? $button['url'] : '';
+			if ( '#' === $b_url || empty( $b_url ) || stripos( $b_title, 'enquire' ) !== false ) {
+				$enquire_shortcode = '[forminator_form id="310"]';
+			}
+		}
 
 		$feats = array();
 		if ( have_rows( 'features' ) ) {
@@ -156,13 +165,14 @@ if ( function_exists( 'have_rows' ) && have_rows( 'packages' ) ) {
 
 		if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) || ! empty( $information ) || ! empty( $button ) ) {
 			$packages[] = array(
-				'title'       => $title,
-				'subtitle'    => $subtitle,
-				'features'    => $feats,
-				'price'       => $price,
-				'is_featured' => $is_featured,
-				'information' => $information,
-				'button'      => $button,
+				'title'                  => $title,
+				'subtitle'               => $subtitle,
+				'features'               => $feats,
+				'price'                  => $price,
+				'is_featured'            => $is_featured,
+				'information'            => $information,
+				'button'                 => $button,
+				'enquire_form_shortcode' => $enquire_shortcode,
 			);
 		}
 	}
@@ -182,19 +192,30 @@ if ( empty( $packages ) && function_exists( 'get_field' ) ) {
 					$is_featured = ! empty( $item['is_featured'] ) || ! empty( $item['featured'] ) || ! empty( $item['highlighted'] );
 					$information = ! empty( $item['information'] ) ? $item['information'] : ( ! empty( $item['info'] ) ? $item['info'] : ( ! empty( $item['package_info'] ) ? $item['package_info'] : ( ! empty( $item['description'] ) ? $item['description'] : '' ) ) );
 					$raw_button  = ! empty( $item['button'] ) ? $item['button'] : ( ! empty( $item['btn'] ) ? $item['btn'] : ( ! empty( $item['link'] ) ? $item['link'] : null ) );
-					$button      = $parse_link( $raw_button, __( 'Book Now', 'dino-world' ) );
+					$button      = $parse_link( $raw_button, __( 'Enquire Now', 'dino-world' ) );
+
+					$enquire_shortcode = ! empty( $item['enquire_form_shortcode'] ) ? $item['enquire_form_shortcode'] : ( ! empty( $item['form_shortcode'] ) ? $item['form_shortcode'] : ( ! empty( $item['shortcode'] ) ? $item['shortcode'] : '' ) );
+					if ( empty( $enquire_shortcode ) ) {
+						$b_title = ! empty( $button['title'] ) ? $button['title'] : '';
+						$b_url   = ! empty( $button['url'] ) ? $button['url'] : '';
+						if ( '#' === $b_url || empty( $b_url ) || stripos( $b_title, 'enquire' ) !== false ) {
+							$enquire_shortcode = '[forminator_form id="310"]';
+						}
+					}
+
 					$raw_f       = ! empty( $item['features'] ) ? $item['features'] : ( ! empty( $item['items'] ) ? $item['items'] : '' );
 					$feats       = $parse_features( $raw_f );
 
 					if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) || ! empty( $information ) || ! empty( $button ) ) {
 						$packages[] = array(
-							'title'       => $title,
-							'subtitle'    => $subtitle,
-							'features'    => $feats,
-							'price'       => $price,
-							'is_featured' => $is_featured,
-							'information' => $information,
-							'button'      => $button,
+							'title'                  => $title,
+							'subtitle'               => $subtitle,
+							'features'               => $feats,
+							'price'                  => $price,
+							'is_featured'            => $is_featured,
+							'information'            => $information,
+							'button'                 => $button,
+							'enquire_form_shortcode' => $enquire_shortcode,
 						);
 					}
 				}
@@ -265,6 +286,9 @@ if ( empty( $packages ) && ! empty( $block_data ) ) {
 			if ( preg_match( "/packages_{$i}_button_target$/", $k ) ) {
 				$btn_target = $v;
 			}
+			if ( preg_match( "/packages_{$i}_(enquire_form_shortcode|form_shortcode|shortcode)$/", $k ) ) {
+				$enquire_shortcode = $v;
+			}
 			if ( preg_match( "/packages_{$i}_features_\d+_(feature_text|text|item|title)$/", $k ) && ! empty( $v ) ) {
 				$feats[] = $v;
 			}
@@ -277,7 +301,15 @@ if ( empty( $packages ) && ! empty( $block_data ) ) {
 				'target' => $btn_target,
 			);
 		}
-		$button = $parse_link( $button_data, __( 'Book Now', 'dino-world' ) );
+		$button = $parse_link( $button_data, __( 'Enquire Now', 'dino-world' ) );
+
+		if ( empty( $enquire_shortcode ) ) {
+			$b_title = ! empty( $button['title'] ) ? $button['title'] : '';
+			$b_url   = ! empty( $button['url'] ) ? $button['url'] : '';
+			if ( '#' === $b_url || empty( $b_url ) || stripos( $b_title, 'enquire' ) !== false ) {
+				$enquire_shortcode = '[forminator_form id="310"]';
+			}
+		}
 
 		if ( empty( $feats ) ) {
 			foreach ( $block_data as $k => $v ) {
@@ -290,13 +322,14 @@ if ( empty( $packages ) && ! empty( $block_data ) ) {
 
 		if ( ! empty( $title ) || ! empty( $subtitle ) || ! empty( $feats ) || ! empty( $price ) || ! empty( $information ) || ! empty( $button ) ) {
 			$packages[] = array(
-				'title'       => $title,
-				'subtitle'    => $subtitle,
-				'features'    => $feats,
-				'price'       => $price,
-				'is_featured' => $is_featured,
-				'information' => $information,
-				'button'      => $button,
+				'title'                  => $title,
+				'subtitle'               => $subtitle,
+				'features'               => $feats,
+				'price'                  => $price,
+				'is_featured'            => $is_featured,
+				'information'            => $information,
+				'button'                 => $button,
+				'enquire_form_shortcode' => $enquire_shortcode,
 			);
 		}
 	}
@@ -393,12 +426,32 @@ $is_admin_preview = ! empty( $is_preview ) || is_admin();
 									</div>
 								<?php endif; ?>
 
-								<?php if ( ! empty( $item['button'] ) && ! empty( $item['button']['url'] ) ) : ?>
+								<?php
+								$has_popup  = ! empty( $item['enquire_form_shortcode'] );
+								$modal_id   = 'dino-modal-' . sanitize_html_class( $block_id . '-' . $index );
+								$btn_title  = ! empty( $item['button']['title'] ) ? $item['button']['title'] : __( 'Enquire Now', 'dino-world' );
+								$btn_url    = ! empty( $item['button']['url'] ) ? $item['button']['url'] : '#';
+								$btn_target = ! empty( $item['button']['target'] ) ? $item['button']['target'] : '_self';
+								?>
+
+								<?php if ( ! empty( $item['button'] ) || $has_popup ) : ?>
 									<div class="xp-btn">
-										<a class="primary-btn" href="<?php echo esc_url( $item['button']['url'] ); ?>" target="<?php echo esc_attr( $item['button']['target'] ); ?>">
-											<?php echo esc_html( $item['button']['title'] ); ?>
-											<img src="<?php echo esc_url( $arrow_icon_url ); ?>" alt="" />
-										</a>
+										<?php if ( $has_popup ) : ?>
+											<a class="primary-btn dino-modal-open-btn"
+											   href="#<?php echo esc_attr( $modal_id ); ?>"
+											   role="button"
+											   data-dino-modal-target="#<?php echo esc_attr( $modal_id ); ?>"
+											   data-bs-toggle="modal"
+											   data-bs-target="#<?php echo esc_attr( $modal_id ); ?>">
+												<?php echo esc_html( $btn_title ); ?>
+												<img src="<?php echo esc_url( $arrow_icon_url ); ?>" alt="" />
+											</a>
+										<?php else : ?>
+											<a class="primary-btn" href="<?php echo esc_url( $btn_url ); ?>" target="<?php echo esc_attr( $btn_target ); ?>">
+												<?php echo esc_html( $btn_title ); ?>
+												<img src="<?php echo esc_url( $arrow_icon_url ); ?>" alt="" />
+											</a>
+										<?php endif; ?>
 									</div>
 								<?php endif; ?>
 							</div>
@@ -408,4 +461,141 @@ $is_admin_preview = ! empty( $is_preview ) || is_admin();
 			</div>
 		<?php endif; ?>
 	</div>
+
+	<?php if ( ! empty( $packages ) ) : ?>
+		<?php foreach ( $packages as $index => $item ) : ?>
+			<?php
+			if ( empty( $item['enquire_form_shortcode'] ) ) {
+				continue;
+			}
+			$modal_id        = 'dino-modal-' . sanitize_html_class( $block_id . '-' . $index );
+			$modal_pkg_title = ! empty( $item['title'] ) ? $item['title'] : __( 'School Excursion', 'dino-world' );
+			?>
+			<div class="dino-excursion-modal modal fade" id="<?php echo esc_attr( $modal_id ); ?>" tabindex="-1" aria-labelledby="<?php echo esc_attr( $modal_id ); ?>-label" aria-hidden="true" role="dialog">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+					<div class="modal-content dino-modal-card">
+						<div class="dino-modal-header">
+							<div class="dino-modal-title-group">
+								<span class="dino-modal-kicker"><?php echo esc_html( $modal_pkg_title ); ?></span>
+								<h3 class="dino-modal-heading" id="<?php echo esc_attr( $modal_id ); ?>-label">
+									<?php esc_html_e( 'Bookings & Excursion Enquiry', 'dino-world' ); ?>
+								</h3>
+								<?php if ( ! empty( $item['subtitle'] ) ) : ?>
+									<p class="dino-modal-subheading"><?php echo esc_html( $item['subtitle'] ); ?></p>
+								<?php endif; ?>
+							</div>
+							<button type="button" class="dino-modal-close" data-bs-dismiss="modal" data-dino-close aria-label="<?php esc_attr_e( 'Close', 'dino-world' ); ?>">
+								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+									<line x1="18" y1="6" x2="6" y2="18"></line>
+									<line x1="6" y1="6" x2="18" y2="18"></line>
+								</svg>
+							</button>
+						</div>
+						<div class="modal-body dino-modal-body">
+							<div class="dino-modal-form-container">
+								<?php echo do_shortcode( $item['enquire_form_shortcode'] ); ?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	<?php endif; ?>
 </section>
+
+<script>
+(function() {
+	function setupDinoModals() {
+		var triggers = document.querySelectorAll('.dino-modal-open-btn');
+		triggers.forEach(function(btn) {
+			if (btn.getAttribute('data-dino-bound')) return;
+			btn.setAttribute('data-dino-bound', 'true');
+
+			btn.addEventListener('click', function(e) {
+				e.preventDefault();
+				var targetSelector = this.getAttribute('data-dino-modal-target') || this.getAttribute('data-bs-target') || this.getAttribute('href');
+				if (!targetSelector || targetSelector === '#') return;
+				var modal = document.querySelector(targetSelector);
+				if (!modal) return;
+
+				// Move modal to body to prevent any CSS transform clipping
+				if (modal.parentElement !== document.body) {
+					document.body.appendChild(modal);
+				}
+
+				// Bootstrap 5 Modal API
+				if (window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+					var bsModal = window.bootstrap.Modal.getOrCreateInstance(modal);
+					bsModal.show();
+				} else {
+					openFallbackModal(modal);
+				}
+
+				// Trigger resize so Forminator calculates field widths
+				setTimeout(function() {
+					window.dispatchEvent(new Event('resize'));
+				}, 150);
+			});
+		});
+
+		function openFallbackModal(modal) {
+			var backdrop = document.querySelector('.dino-modal-backdrop');
+			if (!backdrop) {
+				backdrop = document.createElement('div');
+				backdrop.className = 'dino-modal-backdrop';
+				document.body.appendChild(backdrop);
+				backdrop.addEventListener('click', closeFallbackModals);
+			}
+			backdrop.classList.add('show');
+			modal.classList.add('show', 'is-active');
+			modal.style.display = 'block';
+			document.body.classList.add('modal-open');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeFallbackModals() {
+			document.querySelectorAll('.dino-excursion-modal').forEach(function(m) {
+				if (window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+					var inst = window.bootstrap.Modal.getInstance(m);
+					if (inst) inst.hide();
+				}
+				m.classList.remove('show', 'is-active');
+				m.style.display = 'none';
+			});
+			var backdrop = document.querySelector('.dino-modal-backdrop');
+			if (backdrop) backdrop.classList.remove('show');
+			document.body.classList.remove('modal-open');
+			document.body.style.overflow = '';
+		}
+
+		document.querySelectorAll('.dino-modal-close, [data-dino-close]').forEach(function(closeBtn) {
+			if (closeBtn.getAttribute('data-dino-bound')) return;
+			closeBtn.setAttribute('data-dino-bound', 'true');
+			closeBtn.addEventListener('click', function(e) {
+				e.preventDefault();
+				var modal = this.closest('.dino-excursion-modal');
+				if (modal && window.bootstrap && typeof window.bootstrap.Modal === 'function') {
+					var inst = window.bootstrap.Modal.getInstance(modal);
+					if (inst) {
+						inst.hide();
+						return;
+					}
+				}
+				closeFallbackModals();
+			});
+		});
+
+		document.addEventListener('keydown', function(e) {
+			if (e.key === 'Escape') {
+				closeFallbackModals();
+			}
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', setupDinoModals);
+	} else {
+		setupDinoModals();
+	}
+})();
+</script>
