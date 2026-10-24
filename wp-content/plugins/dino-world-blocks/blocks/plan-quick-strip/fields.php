@@ -22,6 +22,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'instructions' => __( 'Add quick highlight items for the strip (recommended: 4 items).', 'dino-world-blocks' ),
 					'layout'       => 'block',
 					'button_label' => __( 'Add Highlight Item', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_plan_qs_icon',

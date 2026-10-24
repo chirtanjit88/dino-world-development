@@ -46,6 +46,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => __( 'Add Contact Pill', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_plan_qc_pill_icon',

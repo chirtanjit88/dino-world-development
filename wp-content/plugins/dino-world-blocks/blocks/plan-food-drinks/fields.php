@@ -37,6 +37,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => __( 'Add Dining / Facility Card', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_plan_fd_card_icon',
@@ -69,6 +70,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 							'type'         => 'repeater',
 							'layout'       => 'block',
 							'button_label' => __( 'Add Tag Pill', 'dino-world-blocks' ),
+							'wrapper'      => array( 'width' => '100' ),
 							'sub_fields'   => array(
 								array(
 									'key'     => 'field_plan_fd_tag_text',

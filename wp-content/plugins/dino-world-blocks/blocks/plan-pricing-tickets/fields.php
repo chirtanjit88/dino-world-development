@@ -56,6 +56,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => __( 'Add Pricing Card', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'          => 'field_plan_pt_card_title',
@@ -127,6 +128,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 							'type'         => 'repeater',
 							'layout'       => 'block',
 							'button_label' => __( 'Add Feature Line', 'dino-world-blocks' ),
+							'wrapper'      => array( 'width' => '100' ),
 							'sub_fields'   => array(
 								array(
 									'key'     => 'field_plan_pt_feature_text',
@@ -146,6 +148,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => __( 'Add Attraction Item', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_plan_pt_addon_icon',

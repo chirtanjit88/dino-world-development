@@ -45,6 +45,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => __( 'Add Operating Row', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_plan_oh_day',
@@ -89,6 +90,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'repeater',
 					'layout'       => 'block',
 					'button_label' => __( 'Add Advisory Box', 'dino-world-blocks' ),
+					'wrapper'      => array( 'width' => '100' ),
 					'sub_fields'   => array(
 						array(
 							'key'     => 'field_plan_oh_note_title',
