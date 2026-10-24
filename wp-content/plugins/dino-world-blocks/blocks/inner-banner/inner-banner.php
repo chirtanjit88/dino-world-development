@@ -98,10 +98,35 @@ if ( empty( $bg_image_url ) ) {
 }
 
 $bg_style = ! empty( $bg_image_url ) ? 'style="background: url(' . esc_url( $bg_image_url ) . ') center/cover no-repeat;"' : '';
+
+// 3. Overlay Opacity (lighter default: 0.35 instead of 0.8)
+$overlay_opacity = '0.35';
+if ( function_exists( 'get_field' ) ) {
+	$custom_opacity = get_field( 'overlay_opacity' );
+	if ( $custom_opacity !== null && $custom_opacity !== '' ) {
+		$overlay_opacity = $custom_opacity;
+	}
+}
+
+if ( empty( $custom_opacity ) && ! empty( $block_data ) ) {
+	foreach ( $block_data as $k => $v ) {
+		if ( empty( $k ) || $k[0] === '_' ) continue;
+		if ( preg_match( '/overlay(_opacity)?$/', $k ) && is_numeric( $v ) ) {
+			$overlay_opacity = $v;
+			break;
+		}
+	}
+}
+
+if ( is_numeric( $overlay_opacity ) && (float) $overlay_opacity > 1 ) {
+	$overlay_opacity = (float) $overlay_opacity / 100;
+}
+
+$overlay_style = 'style="background: rgba(0, 0, 0, ' . esc_attr( $overlay_opacity ) . ');"';
 ?>
 
 <section id="<?php echo esc_attr( $block_id ); ?>" class="<?php echo esc_attr( $class_name ); ?>" <?php echo $bg_style; ?> data-aos="fade-right">
-	<div class="at-banner-overlay">
+	<div class="at-banner-overlay" <?php echo $overlay_style; ?>>
 		<div class="container">
 			<div class="at-cntn">
 				<?php if ( ! empty( $title ) ) : ?>

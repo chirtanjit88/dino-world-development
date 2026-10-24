@@ -1174,7 +1174,7 @@ li.nav-btn a:hover img,
 }
 
 .at-banner-overlay {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.35);
   max-height: 400px;
   padding: 130px 0;
 }
