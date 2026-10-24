@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/plan-pricing-tickets",
+  "title": "Plan – Admission & Ticket Prices",
+  "description": "Gate admission ticket cards with transparent pricing, best-value family deal badge, and park add-on activities.",
+  "category": "dino-world-blocks",
+  "icon": "tickets-alt",
+  "keywords": ["tickets", "prices", "admission", "pricing", "cards", "addons", "plan"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "plan-pricing-tickets.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

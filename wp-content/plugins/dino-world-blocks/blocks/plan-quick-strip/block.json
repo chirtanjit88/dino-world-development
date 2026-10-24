@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/plan-quick-strip",
+  "title": "Plan – Quick Highlights Strip",
+  "description": "Horizontal highlights strip showcasing park hours, gate ticket policy, location, and free parking.",
+  "category": "dino-world-blocks",
+  "icon": "clock",
+  "keywords": ["plan", "quick", "strip", "highlights", "visit", "hours", "parking"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "plan-quick-strip.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

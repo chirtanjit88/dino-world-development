@@ -4193,9 +4193,15 @@ main#primary {
 }
 
 /* Plan Your Visit Page Dedicated Styles */
-.plan-visit-page {
+.plan-visit-page,
+.plan-section,
+.plan-quick-strip,
+.plan-family-banner {
   font-family: "Poppins", sans-serif;
   color: #2D3748;
+}
+
+.plan-visit-page {
   padding: 20px 0 80px;
 }
 

@@ -95,7 +95,11 @@ function dino_register_acf_blocks() {
 		if ( is_dir( $block_path ) ) {
 			if ( file_exists( $block_path . '/block.json' ) && function_exists( 'register_block_type' ) ) {
 				register_block_type( $block_path . '/block.json' );
-			} elseif ( file_exists( $block_path . '/init.php' ) ) {
+			}
+			if ( file_exists( $block_path . '/fields.php' ) ) {
+				require_once $block_path . '/fields.php';
+			}
+			if ( file_exists( $block_path . '/init.php' ) ) {
 				require_once $block_path . '/init.php';
 			}
 		}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/plan-location-directions",
+  "title": "Plan – Location & Directions",
+  "description": "Location details, driving instructions, GPS navigation tips, and themed interactive map card with Google Maps link.",
+  "category": "dino-world-blocks",
+  "icon": "location-alt",
+  "keywords": ["location", "directions", "map", "somerville", "gps", "parking", "plan"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "plan-location-directions.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}

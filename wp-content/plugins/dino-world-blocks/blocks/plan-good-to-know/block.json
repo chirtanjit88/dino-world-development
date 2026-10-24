@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "dino-world/plan-good-to-know",
+  "title": "Plan – Good to Know Visitor Guide",
+  "description": "8-card grid of essential visitor tips including age recommendations, pram access, parking, and dino shop.",
+  "category": "dino-world-blocks",
+  "icon": "info",
+  "keywords": ["good to know", "tips", "visitor guide", "faq", "prams", "parking", "plan"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "plan-good-to-know.php"
+  },
+  "supports": {
+    "align": ["full", "wide"],
+    "anchor": true,
+    "customClassName": true,
+    "jsx": true
+  }
+}
