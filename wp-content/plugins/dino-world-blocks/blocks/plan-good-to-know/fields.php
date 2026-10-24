@@ -20,7 +20,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'short_heading',
 					'type'         => 'text',
 					'default_value'=> 'Visitor Guide',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_gk_heading',
@@ -28,7 +28,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'heading',
 					'type'         => 'text',
 					'default_value'=> 'Good to Know Before You Arrive',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_gk_tips',
@@ -43,14 +43,14 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 							'label'   => __( 'Icon / Emoji', 'dino-world-blocks' ),
 							'name'    => 'icon',
 							'type'    => 'text',
-							'wrapper' => array( 'width' => '20' ),
+							'wrapper' => array( 'width' => '100' ),
 						),
 						array(
 							'key'     => 'field_plan_gk_tip_title',
 							'label'   => __( 'Tip Title', 'dino-world-blocks' ),
 							'name'    => 'title',
 							'type'    => 'text',
-							'wrapper' => array( 'width' => '80' ),
+							'wrapper' => array( 'width' => '100' ),
 						),
 						array(
 							'key'     => 'field_plan_gk_tip_desc',
@@ -58,6 +58,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 							'name'    => 'description',
 							'type'    => 'textarea',
 							'rows'    => 2,
+							'wrapper' => array( 'width' => '100' ),
 						),
 					),
 				),

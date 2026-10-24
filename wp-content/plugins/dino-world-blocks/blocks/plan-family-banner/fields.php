@@ -21,7 +21,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'image',
 					'return_format'=> 'array',
 					'preview_size' => 'medium',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_fb_short_heading',
@@ -29,7 +29,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'short_heading',
 					'type'         => 'text',
 					'default_value'=> 'Where Imaginations Roar',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_fb_heading',
@@ -37,6 +37,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'heading',
 					'type'         => 'text',
 					'default_value'=> 'Unforgettable Prehistoric Fun for All Generations',
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_fb_desc',
@@ -45,6 +46,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'textarea',
 					'rows'         => 3,
 					'default_value'=> 'From toddler smiles meeting their very first life-size Brachiosaurus to grandparents relaxing in shady picnic pavilions, Dinosaur World Somerville offers a gentle, delightful day out that the whole family will cherish.',
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_fb_btn',
@@ -52,6 +54,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'button',
 					'type'         => 'link',
 					'return_format'=> 'array',
+					'wrapper'      => array( 'width' => '100' ),
 				),
 			),
 			'location'              => array(

@@ -20,7 +20,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'short_heading',
 					'type'         => 'text',
 					'default_value'=> 'Find Us',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_heading',
@@ -28,7 +28,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'heading',
 					'type'         => 'text',
 					'default_value'=> 'How to Get to Dinosaur World',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_items',
@@ -43,14 +43,14 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 							'label'   => __( 'Icon / Emoji', 'dino-world-blocks' ),
 							'name'    => 'icon',
 							'type'    => 'text',
-							'wrapper' => array( 'width' => '20' ),
+							'wrapper' => array( 'width' => '100' ),
 						),
 						array(
 							'key'     => 'field_plan_ld_item_title',
 							'label'   => __( 'Point Title', 'dino-world-blocks' ),
 							'name'    => 'title',
 							'type'    => 'text',
-							'wrapper' => array( 'width' => '80' ),
+							'wrapper' => array( 'width' => '100' ),
 						),
 						array(
 							'key'     => 'field_plan_ld_item_desc',
@@ -60,6 +60,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 							'tabs'    => 'visual',
 							'toolbar' => 'basic',
 							'media_upload' => 0,
+							'wrapper' => array( 'width' => '100' ),
 						),
 					),
 				),
@@ -69,7 +70,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'directions_button',
 					'type'         => 'link',
 					'return_format'=> 'array',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_map_bg',
@@ -78,7 +79,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'image',
 					'return_format'=> 'array',
 					'preview_size' => 'medium',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_pin_title',
@@ -86,7 +87,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'map_pin_title',
 					'type'         => 'text',
 					'default_value'=> '📍 Dinosaur World Somerville',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_pin_address',
@@ -97,7 +98,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'toolbar'      => 'basic',
 					'media_upload' => 0,
 					'default_value'=> "1385 Frankston-Flinders Road, Somerville VIC 3912<br>Corner Frankston-Flinders Rd & O'Neills Rd<br><strong>Look for the Giant Dinosaur Gate!</strong>",
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_map_dino',
@@ -106,7 +107,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'type'         => 'image',
 					'return_format'=> 'array',
 					'preview_size' => 'thumbnail',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
 					'key'          => 'field_plan_ld_map_btn',
@@ -114,7 +115,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'map_button',
 					'type'         => 'link',
 					'return_format'=> 'array',
-					'wrapper'      => array( 'width' => '50' ),
+					'wrapper'      => array( 'width' => '100' ),
 				),
 			),
 			'location'              => array(
