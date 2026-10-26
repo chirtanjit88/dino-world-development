@@ -2,10 +2,9 @@
 /**
  * Block Name: Blog List
  *
- * Displays the main blog grid (excluding the featured post), pagination, and newsletter card from html/blog.html:
+ * Displays the main blog grid (excluding the featured post) and pagination:
  * 1. Main 3-Column Blog Grid (filtered dynamically by category & search)
  * 2. Pagination
- * 3. Newsletter CTA Card
  *
  * No ACF fields required.
  *
@@ -219,20 +218,6 @@ $default_img_url = get_template_directory_uri() . '/assets/image/Fossil-Dig-Expe
 						</div>
 					<?php endif; ?>
 				<?php endif; ?>
-
-				<!-- Newsletter CTA Card -->
-				<div class="newsletter-card" data-aos="fade-up">
-					<h3><?php esc_html_e( 'JOIN THE DINO EXPLORERS CLUB', 'dino-world' ); ?></h3>
-					<p><?php esc_html_e( 'Get exclusive ticket discounts, invitations to special twilight tours, and prehistoric fun facts delivered straight to your inbox.', 'dino-world' ); ?></p>
-					<form class="newsletter-form" onsubmit="event.preventDefault(); alert('Welcome to the Dino Explorers Club!');">
-						<input type="email" placeholder="<?php esc_attr_e( 'Enter your email address...', 'dino-world' ); ?>" required />
-						<button type="submit" class="orange-btn">
-							<?php esc_html_e( 'Subscribe Now', 'dino-world' ); ?>
-							<img src="<?php echo esc_url( $arrow_icon_url ); ?>" alt="" />
-						</button>
-					</form>
-				</div>
-
 			</div>
 		</section>
 
