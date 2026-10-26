@@ -2,19 +2,24 @@
 /**
  * Block Name: Testimonials Carousel
  *
+ * Displays visitor testimonials and Google reviews in a responsive Splide carousel.
+ * Supports Google Places API (New & Legacy), real-time rating summary pill, verified Google badges,
+ * and direct Google review link.
+ *
  * Powered by ACF Block Fields:
  * - background_color (Select: green / white)
- * - short_heading / tagline (Text)
+ * - short_heading (Text)
  * - heading (Text)
  * - dino_image (Image)
- * - testimonials (Repeater: rating [Number], content [Textarea], author [Text])
- * - review_source (Select: both / google / manual)
+ * - review_source (Select: google / both / manual)
  * - google_place_id (Text)
  * - google_api_key (Text)
  * - min_rating (Select: 1, 2, 3, 4, 5)
  * - max_reviews (Number)
- * - show_google_badge (Boolean)
  * - show_summary_badge (Boolean)
+ * - show_google_badge (Boolean)
+ * - show_review_button (Boolean)
+ * - testimonials (Repeater: rating [Number], content [Textarea], author [Text], relative_time [Text])
  *
  * @param array $block The block settings and attributes.
  * @param string $content The block inner HTML (empty).
@@ -63,7 +68,7 @@ if ( ! empty( $block['align'] ) ) {
 $title_class = $is_white_bg ? 'title-2 mb-2 text-center' : 'title-2 mb-2 text-center text-white';
 $card_class  = $is_white_bg ? 'testa-card' : 'test-card';
 
-// 2. Text Fields
+// 2. Text Headings (with friendly defaults)
 $short_heading = '';
 $heading       = '';
 
@@ -72,8 +77,7 @@ if ( function_exists( 'get_field' ) ) {
 	$heading       = get_field( 'heading' ) ?: get_field( 'title' );
 }
 
-// Fallback for text fields
-if ( empty( $short_heading ) ) {
+if ( empty( $short_heading ) && ! empty( $block_data ) ) {
 	foreach ( $block_data as $k => $v ) {
 		if ( empty( $k ) || $k[0] === '_' ) continue;
 		if ( preg_match( '/(short_heading|tagline|sub_heading)$/', $k ) ) {
@@ -82,7 +86,8 @@ if ( empty( $short_heading ) ) {
 		}
 	}
 }
-if ( empty( $heading ) ) {
+
+if ( empty( $heading ) && ! empty( $block_data ) ) {
 	foreach ( $block_data as $k => $v ) {
 		if ( empty( $k ) || $k[0] === '_' ) continue;
 		if ( preg_match( '/(^|_)heading$/', $k ) && ! preg_match( '/short_heading/', $k ) ) {
@@ -96,18 +101,22 @@ if ( empty( $heading ) ) {
 	}
 }
 
-// 3. Decorative Dino Image (used on green design)
+// Default labels if unpopulated
+$short_heading = ! empty( $short_heading ) ? $short_heading : __( 'Visitor Reviews', 'dino-world-blocks' );
+$heading       = ! empty( $heading ) ? $heading : __( 'What Families Say About Dinosaur World', 'dino-world-blocks' );
+
+// 3. Decorative Dinosaur Image (displayed on green background)
 $dino_img_url = '';
-$dino_img_alt = '';
+$dino_img_alt = 'Dinosaur World mascot';
 if ( function_exists( 'get_field' ) ) {
 	$dino_img = get_field( 'dino_image' ) ?: get_field( 'testimonial_dino' );
 	if ( ! empty( $dino_img ) ) {
 		if ( is_array( $dino_img ) ) {
 			$dino_img_url = ! empty( $dino_img['url'] ) ? $dino_img['url'] : '';
-			$dino_img_alt = ! empty( $dino_img['alt'] ) ? $dino_img['alt'] : '';
+			$dino_img_alt = ! empty( $dino_img['alt'] ) ? $dino_img['alt'] : $dino_img_alt;
 		} elseif ( is_numeric( $dino_img ) ) {
 			$dino_img_url = wp_get_attachment_image_url( (int) $dino_img, 'full' );
-			$dino_img_alt = get_post_meta( (int) $dino_img, '_wp_attachment_image_alt', true );
+			$dino_img_alt = get_post_meta( (int) $dino_img, '_wp_attachment_image_alt', true ) ?: $dino_img_alt;
 		} elseif ( is_string( $dino_img ) ) {
 			$dino_img_url = $dino_img;
 		}
@@ -118,7 +127,8 @@ if ( empty( $dino_img_url ) ) {
 }
 
 // 4. Google Reviews Configuration
-$review_source = 'both';
+// Default to 'google' so the block directly displays Google reviews
+$review_source = 'google';
 if ( function_exists( 'get_field' ) ) {
 	$rs = get_field( 'review_source' );
 	if ( ! empty( $rs ) ) {
@@ -130,13 +140,19 @@ if ( empty( $rs ) && ! empty( $block_data['review_source'] ) ) {
 }
 
 $google_place_id = function_exists( 'get_field' ) ? get_field( 'google_place_id' ) : ( $block_data['google_place_id'] ?? '' );
-$google_api_key  = function_exists( 'get_field' ) ? get_field( 'google_api_key' ) : ( $block_data['google_api_key'] ?? '' );
-$min_rating      = function_exists( 'get_field' ) ? ( get_field( 'min_rating' ) ?: 4 ) : ( $block_data['min_rating'] ?? 4 );
-$max_reviews     = function_exists( 'get_field' ) ? ( get_field( 'max_reviews' ) ?: 6 ) : ( $block_data['max_reviews'] ?? 6 );
-$max_reviews     = max( 1, (int) $max_reviews );
+$google_place_id = dino_get_google_place_id( $google_place_id );
+
+$google_api_key = function_exists( 'get_field' ) ? get_field( 'google_api_key' ) : ( $block_data['google_api_key'] ?? '' );
+$google_api_key = dino_get_google_places_api_key( $google_api_key );
+
+$min_rating  = function_exists( 'get_field' ) ? ( get_field( 'min_rating' ) ?: 4 ) : ( $block_data['min_rating'] ?? 4 );
+$max_reviews = function_exists( 'get_field' ) ? ( get_field( 'max_reviews' ) ?: 6 ) : ( $block_data['max_reviews'] ?? 6 );
+$max_reviews = max( 1, min( 20, (int) $max_reviews ) );
 
 $show_google_badge  = true;
 $show_summary_badge = true;
+$show_review_button = true;
+
 if ( function_exists( 'get_field' ) ) {
 	$sgb = get_field( 'show_google_badge' );
 	if ( null !== $sgb && '' !== $sgb ) {
@@ -146,21 +162,25 @@ if ( function_exists( 'get_field' ) ) {
 	if ( null !== $ssb && '' !== $ssb ) {
 		$show_summary_badge = (bool) $ssb;
 	}
+	$srb = get_field( 'show_review_button' );
+	if ( null !== $srb && '' !== $srb ) {
+		$show_review_button = (bool) $srb;
+	}
 }
 
 // 5. Extract Manual Testimonials Repeater
 $manual_testimonials = array();
 
-// Method A: ACF have_rows
 if ( function_exists( 'have_rows' ) ) {
 	$rep_keys = array( 'testimonials', 'testimonial_list', 'reviews', 'quotes' );
 	foreach ( $rep_keys as $rk ) {
 		if ( have_rows( $rk ) ) {
 			while ( have_rows( $rk ) ) {
 				the_row();
-				$rating  = get_sub_field( 'rating' );
-				$content = get_sub_field( 'content' ) ?: ( get_sub_field( 'review' ) ?: get_sub_field( 'testimonial' ) );
-				$author  = get_sub_field( 'author' ) ?: ( get_sub_field( 'author_name' ) ?: get_sub_field( 'name' ) );
+				$rating    = get_sub_field( 'rating' );
+				$content   = get_sub_field( 'content' ) ?: ( get_sub_field( 'review' ) ?: get_sub_field( 'testimonial' ) );
+				$author    = get_sub_field( 'author' ) ?: ( get_sub_field( 'author_name' ) ?: get_sub_field( 'name' ) );
+				$rel_time  = get_sub_field( 'relative_time' ) ?: '';
 
 				if ( ! empty( $content ) || ! empty( $author ) ) {
 					$manual_testimonials[] = array(
@@ -168,7 +188,7 @@ if ( function_exists( 'have_rows' ) ) {
 						'content'       => $content,
 						'author'        => $author,
 						'source'        => 'manual',
-						'relative_time' => '',
+						'relative_time' => $rel_time,
 						'profile_photo' => '',
 						'author_url'    => '',
 					);
@@ -179,7 +199,7 @@ if ( function_exists( 'have_rows' ) ) {
 	}
 }
 
-// Method B: Raw block_data fallback
+// Raw block_data fallback for manual testimonials
 if ( empty( $manual_testimonials ) && ! empty( $block_data ) ) {
 	$test_count = 0;
 	foreach ( $block_data as $k => $v ) {
@@ -190,9 +210,10 @@ if ( empty( $manual_testimonials ) && ! empty( $block_data ) ) {
 	}
 
 	for ( $i = 0; $i < $test_count; $i++ ) {
-		$rating  = 5;
-		$content = '';
-		$author  = '';
+		$rating   = 5;
+		$content  = '';
+		$author   = '';
+		$rel_time = '';
 		foreach ( $block_data as $k => $v ) {
 			if ( empty( $k ) || $k[0] === '_' ) continue;
 			if ( preg_match( "/(testimonials|testimonial_list|reviews)_{$i}_rating$/", $k ) ) {
@@ -204,6 +225,9 @@ if ( empty( $manual_testimonials ) && ! empty( $block_data ) ) {
 			if ( preg_match( "/(testimonials|testimonial_list|reviews)_{$i}_(author|author_name|name)$/", $k ) ) {
 				$author = $v;
 			}
+			if ( preg_match( "/(testimonials|testimonial_list|reviews)_{$i}_relative_time$/", $k ) ) {
+				$rel_time = $v;
+			}
 		}
 		if ( ! empty( $content ) || ! empty( $author ) ) {
 			$manual_testimonials[] = array(
@@ -211,7 +235,7 @@ if ( empty( $manual_testimonials ) && ! empty( $block_data ) ) {
 				'content'       => $content,
 				'author'        => $author,
 				'source'        => 'manual',
-				'relative_time' => '',
+				'relative_time' => $rel_time,
 				'profile_photo' => '',
 				'author_url'    => '',
 			);
@@ -222,6 +246,7 @@ if ( empty( $manual_testimonials ) && ! empty( $block_data ) ) {
 // 6. Fetch Google Reviews
 $google_data    = array();
 $google_reviews = array();
+
 if ( 'manual' !== $review_source ) {
 	$cache_hours = function_exists( 'get_field' ) ? ( (int) get_field( 'google_reviews_cache_hours', 'option' ) ?: 24 ) : 24;
 	$google_data = dino_fetch_google_reviews(
@@ -246,9 +271,8 @@ if ( 'google' === $review_source ) {
 } elseif ( 'manual' === $review_source ) {
 	$testimonials_list = $manual_testimonials;
 } else {
-	// 'both': Merge Google reviews with manual testimonials
+	// 'both': Merge and interleave Google reviews and manual testimonials
 	if ( ! empty( $google_reviews ) && ! empty( $manual_testimonials ) ) {
-		// Interleave or combine Google and manual reviews
 		$g_idx = 0;
 		$m_idx = 0;
 		$g_cnt = count( $google_reviews );
@@ -277,8 +301,8 @@ if ( count( $testimonials_list ) > $max_reviews ) {
 	$testimonials_list = array_slice( $testimonials_list, 0, $max_reviews );
 }
 
-$carousel_id   = 'carousel-' . preg_replace( '/[^a-zA-Z0-9_-]/', '', $block_id );
-$has_google    = false;
+$carousel_id = 'carousel-' . preg_replace( '/[^a-zA-Z0-9_-]/', '', $block_id );
+$has_google  = false;
 foreach ( $testimonials_list as $t ) {
 	if ( ! empty( $t['source'] ) && 'google' === $t['source'] ) {
 		$has_google = true;
@@ -286,16 +310,17 @@ foreach ( $testimonials_list as $t ) {
 	}
 }
 
-$overall_rating = ! empty( $google_data['rating'] ) ? number_format( (float) $google_data['rating'], 1 ) : '4.9';
-$total_ratings  = ! empty( $google_data['user_ratings_total'] ) ? (int) $google_data['user_ratings_total'] : 450;
-$place_url      = ! empty( $google_data['place_url'] ) ? $google_data['place_url'] : 'https://maps.google.com';
+$overall_rating = ! empty( $google_data['rating'] ) ? number_format( (float) $google_data['rating'], 1 ) : '4.1';
+$total_ratings  = ! empty( $google_data['user_ratings_total'] ) ? (int) $google_data['user_ratings_total'] : 1306;
+$place_url      = ! empty( $google_data['place_url'] ) ? $google_data['place_url'] : dino_get_google_place_url( $google_place_id );
+$write_rev_url  = dino_get_google_write_review_url( $google_place_id );
 ?>
 
 <section id="<?php echo esc_attr( $block_id ); ?>" class="<?php echo esc_attr( $class_name ); ?>" data-aos="fade-down" data-aos-duration="800">
 	<div class="container">
 		<?php if ( ! $is_white_bg && ! empty( $dino_img_url ) ) : ?>
 			<div class="test-dino">
-				<img src="<?php echo esc_url( $dino_img_url ); ?>" alt="<?php echo esc_attr( $dino_img_alt ); ?>" />
+				<img src="<?php echo esc_url( $dino_img_url ); ?>" alt="<?php echo esc_attr( $dino_img_alt ); ?>" loading="lazy" />
 			</div>
 		<?php endif; ?>
 
@@ -309,7 +334,7 @@ $place_url      = ! empty( $google_data['place_url'] ) ? $google_data['place_url
 
 		<?php if ( $show_summary_badge && $has_google ) : ?>
 			<div class="d-flex justify-content-center mb-4">
-				<a href="<?php echo esc_url( $place_url ); ?>" target="_blank" rel="noopener noreferrer" class="google-summary-pill d-inline-flex align-items-center gap-2">
+				<a href="<?php echo esc_url( $place_url ); ?>" target="_blank" rel="noopener noreferrer" class="google-summary-pill d-inline-flex align-items-center gap-2" title="<?php esc_attr_e( 'View Dinosaur World on Google Maps', 'dino-world-blocks' ); ?>">
 					<svg width="20" height="20" viewBox="0 0 24 24" class="google-logo-svg" aria-hidden="true">
 						<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
 						<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -318,7 +343,7 @@ $place_url      = ! empty( $google_data['place_url'] ) ? $google_data['place_url
 					</svg>
 					<span class="rating-val"><strong><?php echo esc_html( $overall_rating ); ?></strong></span>
 					<span class="rating-stars" aria-label="<?php echo esc_attr( $overall_rating ); ?> stars">★★★★★</span>
-					<span class="rating-count">on Google (<?php echo esc_html( $total_ratings ); ?>+ reviews)</span>
+					<span class="rating-count">on Google (<?php echo esc_html( number_format_i18n( $total_ratings ) ); ?>+ reviews)</span>
 				</a>
 			</div>
 		<?php endif; ?>
@@ -370,11 +395,15 @@ $place_url      = ! empty( $google_data['place_url'] ) ? $google_data['place_url
 										<div class="test-name mt-auto pt-2 d-flex align-items-center justify-content-between">
 											<div class="author-meta d-flex align-items-center gap-2">
 												<?php if ( ! empty( $item['profile_photo'] ) ) : ?>
-													<img src="<?php echo esc_url( $item['profile_photo'] ); ?>" alt="<?php echo esc_attr( $item['author'] ); ?>" class="reviewer-avatar rounded-circle" width="34" height="34" loading="lazy" />
+													<img src="<?php echo esc_url( $item['profile_photo'] ); ?>" alt="<?php echo esc_attr( $item['author'] ); ?>" class="reviewer-avatar rounded-circle" width="36" height="36" loading="lazy" />
+												<?php else : ?>
+													<div class="reviewer-avatar-fallback rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:#EAF3DC;color:#233400;font-weight:700;font-size:14px;border:1.5px solid #d5e5bf;" aria-hidden="true">
+														<?php echo esc_html( mb_substr( $item['author'] ?? 'D', 0, 1 ) ); ?>
+													</div>
 												<?php endif; ?>
 												<div>
 													<?php if ( ! empty( $item['author_url'] ) ) : ?>
-														<a href="<?php echo esc_url( $item['author_url'] ); ?>" target="_blank" rel="noopener noreferrer" class="author-link">
+														<a href="<?php echo esc_url( $item['author_url'] ); ?>" target="_blank" rel="noopener noreferrer" class="author-link" title="<?php echo esc_attr( sprintf( __( 'View %s on Google Maps', 'dino-world-blocks' ), $item['author'] ) ); ?>">
 															<p class="mb-0 author-text"><?php echo esc_html( $item['author'] ); ?></p>
 														</a>
 													<?php else : ?>
@@ -395,22 +424,56 @@ $place_url      = ! empty( $google_data['place_url'] ) ? $google_data['place_url
 				</div>
 			</div>
 
+			<?php if ( $has_google && $show_review_button ) : ?>
+				<div class="d-flex justify-content-center mt-4 pt-2">
+					<a href="<?php echo esc_url( $write_rev_url ); ?>" target="_blank" rel="noopener noreferrer" class="primary-btn d-inline-flex align-items-center gap-2">
+						<span><?php esc_html_e( 'Review Us on Google', 'dino-world-blocks' ); ?></span>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+							<polyline points="15 3 21 3 21 9"></polyline>
+							<line x1="10" y1="14" x2="21" y2="3"></line>
+						</svg>
+					</a>
+				</div>
+			<?php endif; ?>
+
 			<script>
-				document.addEventListener('DOMContentLoaded', function() {
-					var el = document.getElementById('<?php echo esc_js( $carousel_id ); ?>');
-					if (typeof Splide !== 'undefined' && el && !el.classList.contains('is-active')) {
+				(function() {
+					function initDinoTestimonialsSlider_<?php echo esc_js( str_replace( '-', '_', $carousel_id ) ); ?>() {
+						var el = document.getElementById('<?php echo esc_js( $carousel_id ); ?>');
+						if (!el || typeof Splide === 'undefined') return;
+						if (el.classList.contains('is-active')) return;
+
 						new Splide(el, {
+							type: 'loop',
 							perPage: 3,
 							gap: '1.25rem',
-							pagination: true,
+							pagination: false,
 							arrows: true,
+							autoplay: true,
+							interval: 5000,
+							pauseOnHover: true,
+							pauseOnFocus: true,
 							breakpoints: {
 								992: { perPage: 2, gap: '1rem' },
 								768: { perPage: 1, gap: '.75rem' }
 							}
 						}).mount();
 					}
-				});
+
+					if (document.readyState === 'loading') {
+						document.addEventListener('DOMContentLoaded', initDinoTestimonialsSlider_<?php echo esc_js( str_replace( '-', '_', $carousel_id ) ); ?>);
+					} else {
+						initDinoTestimonialsSlider_<?php echo esc_js( str_replace( '-', '_', $carousel_id ) ); ?>();
+					}
+
+					// Support ACF Block Preview inside the Gutenberg editor
+					if (window.acf) {
+						window.acf.addAction('render_block_preview/type=dino-world/testimonials', function() {
+							setTimeout(initDinoTestimonialsSlider_<?php echo esc_js( str_replace( '-', '_', $carousel_id ) ); ?>, 150);
+						});
+					}
+				})();
 			</script>
 		<?php endif; ?>
 	</div>
