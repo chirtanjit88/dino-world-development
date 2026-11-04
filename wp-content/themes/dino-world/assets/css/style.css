@@ -454,12 +454,30 @@ li.nav-btn a:hover img,
   font-weight: 600;
   color: #233400;
   max-width: 530px;
-
+  line-height: 1.4;
 }
 
 .abt-btn {
   display: flex;
+  align-items: center;
   margin-top: 20px;
+}
+
+.abt-btn .abt-btn1,
+.abt-btn .abt-btn2 {
+  display: flex;
+  align-items: center;
+}
+
+.abt-btn .orange-btn,
+.abt-btn .primary-btn {
+  font-size: 20px;
+  line-height: 1.2;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
 }
 
 .abt-btn .primary-btn {

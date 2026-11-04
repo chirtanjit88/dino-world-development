@@ -81,12 +81,12 @@ $has_buttons = function_exists( 'have_rows' ) && have_rows( 'buttons' );
 			<div class="col-lg-6">
 				<div class="about-cntn">
 					<?php if ( ! empty( $heading ) ) : ?>
-						<h2 class="title-2"><?php echo esc_html( $heading ); ?></h2>
+						<h2 class="title-2"><?php echo wp_kses_post( htmlspecialchars_decode( $heading, ENT_QUOTES ) ); ?></h2>
 					<?php endif; ?>
 
 					<?php if ( ! empty( $sub_heading ) ) : ?>
 						<div class="abt-sub">
-							<p><?php echo esc_html( $sub_heading ); ?></p>
+							<p><?php echo wp_kses_post( htmlspecialchars_decode( $sub_heading, ENT_QUOTES ) ); ?></p>
 						</div>
 					<?php endif; ?>
 
@@ -100,7 +100,17 @@ $has_buttons = function_exists( 'have_rows' ) && have_rows( 'buttons' );
 
 							<?php if ( ! empty( $highlight_text ) ) : ?>
 								<div class="abt-highlit">
-									<p><?php echo esc_html( $highlight_text ); ?></p>
+									<?php
+									$highlight_output = wp_kses_post( htmlspecialchars_decode( $highlight_text, ENT_QUOTES ) );
+									if ( false === strpos( $highlight_output, '<br' ) && false === strpos( $highlight_output, '<p' ) ) {
+										$highlight_output = nl2br( $highlight_output );
+									}
+									if ( false !== strpos( $highlight_output, '<p>' ) || false !== strpos( $highlight_output, '<p ' ) ) {
+										echo $highlight_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									} else {
+										echo '<p>' . $highlight_output . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									}
+									?>
 								</div>
 							<?php endif; ?>
 						</div>
