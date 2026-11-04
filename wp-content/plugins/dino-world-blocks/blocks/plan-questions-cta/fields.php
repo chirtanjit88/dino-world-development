@@ -19,7 +19,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'label'        => __( 'Short Heading / Eyebrow', 'dino-world-blocks' ),
 					'name'         => 'short_heading',
 					'type'         => 'text',
-					'default_value'=> "We're Here to Help",
 					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
@@ -27,7 +26,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'label'        => __( 'Main Heading', 'dino-world-blocks' ),
 					'name'         => 'heading',
 					'type'         => 'text',
-					'default_value'=> 'Have Questions Before You Visit?',
 					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
@@ -36,7 +34,6 @@ if ( function_exists( 'acf_add_local_field_group' ) ) {
 					'name'         => 'description',
 					'type'         => 'textarea',
 					'rows'         => 2,
-					'default_value'=> 'Our friendly park crew is ready to answer any questions about accessibility, party bookings, holiday hours, or group visits.',
 					'wrapper'      => array( 'width' => '100' ),
 				),
 				array(
