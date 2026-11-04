@@ -626,11 +626,11 @@ $has_attractions   = ! empty( $attraction_items );
 					}
 					$card_aos   = 0 === $card_idx ? ' data-aos="fade-down-left" data-aos-duration="600"' : ' data-aos="fade-down-right" data-aos-duration="600"';
 					?>
-					<div class="col-md-6"<?php echo $card_aos; ?>>
-						<div class="<?php echo esc_attr( $card_class ); ?>">
-							<div class="row">
-								<div class="<?php echo esc_attr( $col_text ); ?>">
-									<div class="pc-txt">
+					<div class="col-md-6 d-flex flex-column"<?php echo $card_aos; ?>>
+						<div class="<?php echo esc_attr( $card_class ); ?> h-100">
+							<div class="row h-100">
+								<div class="<?php echo esc_attr( $col_text ); ?> d-flex flex-column">
+									<div class="pc-txt d-flex flex-column h-100">
 										<?php if ( ! empty( $card['title'] ) ) : ?>
 											<div class="pc-hd">
 												<p><?php echo esc_html( $card['title'] ); ?></p>
@@ -642,7 +642,7 @@ $has_attractions   = ! empty( $attraction_items );
 												<?php if ( strpos( $card['description'], '<p>' ) !== false ) : ?>
 													<?php echo wp_kses_post( $card['description'] ); ?>
 												<?php else : ?>
-													<p><?php echo esc_html( $card['description'] ); ?></p>
+													<p><?php echo wp_kses_post( nl2br( htmlspecialchars_decode( $card['description'], ENT_QUOTES ) ) ); ?></p>
 												<?php endif; ?>
 											</div>
 										<?php endif; ?>
@@ -658,7 +658,7 @@ $has_attractions   = ! empty( $attraction_items );
 										<?php endif; ?>
 
 										<?php if ( ! empty( $btn_url ) && ! empty( $btn_title ) ) : ?>
-											<div class="pc-btn">
+											<div class="pc-btn mt-auto">
 												<a class="orange-btn gap-2" href="<?php echo esc_url( $btn_url ); ?>" target="<?php echo esc_attr( $btn_target ); ?>">
 													<?php echo esc_html( $btn_title ); ?> <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/image/right-arrow.png' ); ?>" alt="" />
 												</a>
@@ -668,7 +668,7 @@ $has_attractions   = ! empty( $attraction_items );
 								</div>
 
 								<?php if ( ! empty( $img_url ) ) : ?>
-									<div class="<?php echo esc_attr( $col_img ); ?>">
+									<div class="<?php echo esc_attr( $col_img ); ?> d-flex flex-column">
 										<div class="<?php echo esc_attr( $img_div ); ?>">
 											<img class="h-100 w-100 object-fit-cover" src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" />
 										</div>
@@ -782,11 +782,11 @@ $has_attractions   = ! empty( $attraction_items );
 					}
 					$card_aos   = 0 === $card_idx ? ' data-aos="fade-down-left" data-aos-duration="600"' : ' data-aos="fade-down-right" data-aos-duration="600"';
 					?>
-					<div class="col-md-6"<?php echo $card_aos; ?>>
-						<div class="<?php echo esc_attr( $card_class ); ?>">
-							<div class="row">
-								<div class="<?php echo esc_attr( $col_text ); ?>">
-									<div class="pc-txt">
+					<div class="col-md-6 d-flex flex-column"<?php echo $card_aos; ?>>
+						<div class="<?php echo esc_attr( $card_class ); ?> h-100">
+							<div class="row h-100">
+								<div class="<?php echo esc_attr( $col_text ); ?> d-flex flex-column">
+									<div class="pc-txt d-flex flex-column h-100">
 										<?php if ( ! empty( $card['title'] ) ) : ?>
 											<div class="pc-hd">
 												<p><?php echo esc_html( $card['title'] ); ?></p>
@@ -798,7 +798,7 @@ $has_attractions   = ! empty( $attraction_items );
 												<?php if ( strpos( $card['description'], '<p>' ) !== false ) : ?>
 													<?php echo wp_kses_post( $card['description'] ); ?>
 												<?php else : ?>
-													<p><?php echo esc_html( $card['description'] ); ?></p>
+													<p><?php echo wp_kses_post( nl2br( htmlspecialchars_decode( $card['description'], ENT_QUOTES ) ) ); ?></p>
 												<?php endif; ?>
 											</div>
 										<?php endif; ?>
@@ -814,7 +814,7 @@ $has_attractions   = ! empty( $attraction_items );
 										<?php endif; ?>
 
 										<?php if ( ! empty( $btn_url ) && ! empty( $btn_title ) ) : ?>
-											<div class="pc-btn">
+											<div class="pc-btn mt-auto">
 												<a class="orange-btn gap-2" href="<?php echo esc_url( $btn_url ); ?>" target="<?php echo esc_attr( $btn_target ); ?>">
 													<?php echo esc_html( $btn_title ); ?> <img src="<?php echo esc_url( get_template_directory_uri() . '/assets/image/right-arrow.png' ); ?>" alt="" />
 												</a>
@@ -824,7 +824,7 @@ $has_attractions   = ! empty( $attraction_items );
 								</div>
 
 								<?php if ( ! empty( $img_url ) ) : ?>
-									<div class="<?php echo esc_attr( $col_img ); ?>">
+									<div class="<?php echo esc_attr( $col_img ); ?> d-flex flex-column">
 										<div class="<?php echo esc_attr( $img_div ); ?>">
 											<img class="h-100 w-100 object-fit-cover" src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $img_alt ); ?>" />
 										</div>

@@ -731,11 +731,38 @@ li.nav-btn a:hover img,
 .party-card {
   background-color: #ffffff;
   border-radius: 20px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
+.party-card > .row {
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+.party-card [class*="col-"] {
+  display: flex;
+  flex-direction: column;
+}
 
 .pc-txt {
   padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.pc-btn {
+  margin-top: auto;
+}
+
+.party-card .party-img,
+.party-card .party-img1 {
+  height: 100%;
+  flex: 1 1 auto;
 }
 
 .party-img img {
