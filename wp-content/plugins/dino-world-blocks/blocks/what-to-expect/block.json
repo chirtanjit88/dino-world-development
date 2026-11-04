@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/what-to-expect",
   "title": "What to Expect",
   "description": "What to Expect section with intro text, rich description, highlight banner, dual CTA buttons, and layered images.",

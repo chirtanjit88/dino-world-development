@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/faq",
   "title": "FAQ Section",
   "description": "Frequently Asked Questions accordion section with tagline, heading, and expandable items.",

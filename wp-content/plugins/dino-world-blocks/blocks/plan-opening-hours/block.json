@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-opening-hours",
   "title": "Plan – Opening Hours",
   "description": "Park opening hours section with weekly schedule table, holiday story time note, summer heat policy, and explorer tips.",

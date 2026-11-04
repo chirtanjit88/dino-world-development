@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/testimonials",
   "title": "Testimonials Carousel",
   "description": "Visitor reviews & Google reviews slider with star ratings, feedback cards, and decorative dinosaur illustration.",

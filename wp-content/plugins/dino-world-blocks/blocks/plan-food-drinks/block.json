@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-food-drinks",
   "title": "Plan – Food, Drinks & Picnic Facilities",
   "description": "Information cards showcasing park kiosk treats, Bedrock Gelato, free gas BBQs, and shaded picnic areas.",

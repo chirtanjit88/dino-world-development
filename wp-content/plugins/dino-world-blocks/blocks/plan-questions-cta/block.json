@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-questions-cta",
   "title": "Plan – Have Questions CTA",
   "description": "Visitor questions and contact call-to-action banner with phone, email, Facebook pills, and primary action buttons.",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-your-visit",
   "title": "Plan Your Visit",
   "description": "Plan your visit section with features list, ticket pricing cards, and CTA button.",

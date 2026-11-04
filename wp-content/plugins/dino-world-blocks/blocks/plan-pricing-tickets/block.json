@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-pricing-tickets",
   "title": "Plan – Admission & Ticket Prices",
   "description": "Gate admission ticket cards with transparent pricing, best-value family deal badge, and park add-on activities.",

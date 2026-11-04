@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-location-directions",
   "title": "Plan – Location & Directions",
   "description": "Location details, driving instructions, GPS navigation tips, and themed interactive map card with Google Maps link.",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/excursion-packages",
   "title": "Excursion Packages",
   "description": "Excursion packages section with pricing cards, features list (with green tick icons), price per student, additional information/notes, and action button.",

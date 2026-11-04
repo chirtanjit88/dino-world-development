@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/gallery",
   "title": "Gallery Preview",
   "description": "Gallery preview section with tagline, heading, dynamic photo masonry grid, and CTA button.",

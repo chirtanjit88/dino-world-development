@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/plan-quick-strip",
   "title": "Plan – Quick Highlights Strip",
   "description": "Horizontal highlights strip showcasing park hours, gate ticket policy, location, and free parking.",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/adventure-features",
   "title": "Adventure Features",
   "description": "Adventure Around Every Corner section with heading, description, 3 feature icons, and right-side showcase image.",

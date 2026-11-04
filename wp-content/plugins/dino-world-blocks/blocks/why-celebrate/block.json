@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/why-celebrate",
   "title": "Why Celebrate",
   "description": "Why Celebrate section with section heading, description paragraph, and feature cards (icon, title, description).",

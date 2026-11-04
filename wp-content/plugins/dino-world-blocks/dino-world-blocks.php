@@ -21,6 +21,13 @@ define( 'DINO_BLOCKS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'DINO_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
 
 /**
+ * Enable modern ACF / SCF Blocks V3 (Expanded Editor support)
+ */
+add_filter( 'acf/blocks/default_block_version', function() {
+	return 3;
+} );
+
+/**
  * Load plugin textdomain on init
  */
 function dino_load_blocks_textdomain() {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/blog-list",
   "title": "Blog List",
   "description": "Lists all blog posts in a 3-column grid with live category filters, search bar, and pagination matching blog.html. No ACF fields required.",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/cta-banner",
   "title": "CTA Banner",
   "description": "Call to action banner with heading, description, CTA button, and background image overlay.",

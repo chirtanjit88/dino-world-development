@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "dino-world/home-banner",
   "title": "Home Banner",
   "description": "Hero banner with video and fallback image background support for Dinosaur World.",
