@@ -213,13 +213,13 @@ $loc_card_style = ! empty( $location_bg_url ) ? 'style="background: url(' . esc_
 
 	<div class="container">
 		<div class="row">
-			<div class="col-xl-5" data-aos="fade-down">
-				<div class="time-card">
+			<div class="col-md-6 col-xl-5 d-flex flex-column" data-aos="fade-down">
+				<div class="time-card h-100">
 					<div class="time-hd">
 						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M13.3 14.7L14.7 13.3L11 9.6V5H9V10.4L13.3 14.7ZM10 20C8.61667 20 7.31667 19.7375 6.1 19.2125C4.88333 18.6875 3.825 17.975 2.925 17.075C2.025 16.175 1.3125 15.1167 0.7875 13.9C0.2625 12.6833 0 11.3833 0 10C0 8.61667 0.2625 7.31667 0.7875 6.1C1.3125 4.88333 2.025 3.825 2.925 2.925C3.825 2.025 4.88333 1.3125 6.1 0.7875C7.31667 0.2625 8.61667 0 10 0C11.3833 0 12.6833 0.2625 13.9 0.7875C15.1167 1.3125 16.175 2.025 17.075 2.925C17.975 3.825 18.6875 4.88333 19.2125 6.1C19.7375 7.31667 20 8.61667 20 10C20 11.3833 19.7375 12.6833 19.2125 13.9C18.6875 15.1167 17.975 16.175 17.075 17.075C16.175 17.975 15.1167 18.6875 13.9 19.2125C12.6833 19.7375 11.3833 20 10 20ZM10 18C12.2167 18 14.1042 17.2208 15.6625 15.6625C17.2208 14.1042 18 12.2167 18 10C18 7.78333 17.2208 5.89583 15.6625 4.3375C14.1042 2.77917 12.2167 2 10 2C7.78333 2 5.89583 2.77917 4.3375 4.3375C2.77917 5.89583 2 7.78333 2 10C2 12.2167 2.77917 14.1042 4.3375 15.6625C5.89583 17.2208 7.78333 18 10 18Z" fill="#56642B" />
 						</svg>
-						<p><?php echo esc_html( $hours_title ); ?></p>
+						<p><?php echo wp_kses_post( htmlspecialchars_decode( $hours_title, ENT_QUOTES ) ); ?></p>
 					</div>
 
 					<?php if ( ! empty( $schedule ) ) : ?>
@@ -229,10 +229,10 @@ $loc_card_style = ! empty( $location_bg_url ) ? 'style="background: url(' . esc_
 							?>
 							<div class="time-data">
 								<div class="time-info">
-									<p><?php echo esc_html( $item['days'] ); ?></p>
+									<p><?php echo wp_kses_post( htmlspecialchars_decode( $item['days'], ENT_QUOTES ) ); ?></p>
 								</div>
 								<div class="<?php echo esc_attr( $time_class ); ?>">
-									<p><?php echo esc_html( $item['hours'] ); ?></p>
+									<p><?php echo wp_kses_post( htmlspecialchars_decode( $item['hours'], ENT_QUOTES ) ); ?></p>
 								</div>
 							</div>
 						<?php endforeach; ?>
@@ -240,21 +240,37 @@ $loc_card_style = ! empty( $location_bg_url ) ? 'style="background: url(' . esc_
 
 					<?php if ( ! empty( $holiday_note ) ) : ?>
 						<div class="time-h">
-							<p><?php echo esc_html( $holiday_note ); ?></p>
+							<?php
+							$holiday_output = wp_kses_post( htmlspecialchars_decode( $holiday_note, ENT_QUOTES ) );
+							if ( false === strpos( $holiday_output, '<br' ) && false === strpos( $holiday_output, '<p' ) ) {
+								$holiday_output = nl2br( $holiday_output );
+							}
+							if ( false !== strpos( $holiday_output, '<p>' ) || false !== strpos( $holiday_output, '<p ' ) ) {
+								echo $holiday_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							} else {
+								echo '<p>' . $holiday_output . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+							?>
 						</div>
 					<?php endif; ?>
 				</div>
 			</div>
 
-			<div class="col-xl-5" data-aos="fade-down">
-				<div class="location-card" <?php echo $loc_card_style; ?>>
+			<div class="col-md-6 col-xl-5 d-flex flex-column" data-aos="fade-down">
+				<div class="location-card h-100" <?php echo $loc_card_style; ?>>
 					<?php if ( ! empty( $location_text ) ) : ?>
 						<div class="location-txt">
-							<?php if ( strpos( $location_text, '<p>' ) !== false ) : ?>
-								<?php echo wp_kses_post( $location_text ); ?>
-							<?php else : ?>
-								<p><?php echo wp_kses_post( nl2br( $location_text ) ); ?></p>
-							<?php endif; ?>
+							<?php
+							$loc_output = wp_kses_post( htmlspecialchars_decode( $location_text, ENT_QUOTES ) );
+							if ( false === strpos( $loc_output, '<br' ) && false === strpos( $loc_output, '<p' ) ) {
+								$loc_output = nl2br( $loc_output );
+							}
+							if ( false !== strpos( $loc_output, '<p>' ) || false !== strpos( $loc_output, '<p ' ) ) {
+								echo $loc_output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							} else {
+								echo '<p>' . $loc_output . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							}
+							?>
 						</div>
 					<?php endif; ?>
 

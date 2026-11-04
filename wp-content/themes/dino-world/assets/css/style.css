@@ -947,12 +947,25 @@ li.nav-btn a:hover img,
   border: 1px solid black;
   border-radius: 20px;
   margin-bottom: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-card .time-h {
+  margin-top: auto;
+  padding-top: 15px;
 }
 
 .location-card {
   padding: 40px;
   background: url(../image/loaction.png) center/ cover no-repeat;
   border-radius: 20px;
+  margin-bottom: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .time-hd {
@@ -991,7 +1004,8 @@ li.nav-btn a:hover img,
 }
 
 .location-btn {
-  margin-top: 30px;
+  margin-top: auto;
+  padding-top: 20px;
 }
 
 .dino-sketch {
@@ -1011,6 +1025,7 @@ li.nav-btn a:hover img,
   font-weight: 600;
   font-family: "Afacad Flux", sans-serif;
   color: var(--primary-color);
+  line-height: 1.35;
 }
 
 .location-txt p {
