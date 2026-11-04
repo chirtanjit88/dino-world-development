@@ -3366,7 +3366,7 @@ main#primary {
 
 .f-info a,
 .mail a {
-  font-size: 22px;
+  font-size: 20px;
   color: var(--text-color);
   font-weight: 600;
   font-family: "Poppins", sans-serif;
@@ -3375,13 +3375,19 @@ main#primary {
   gap: 10px;
   text-decoration: none;
   transition: color 0.2s ease;
+  max-width: 100%;
+}
+
+.f-info-text {
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .f-info a svg,
 .mail a svg {
   flex-shrink: 0;
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
 }
 
 .f-info a:hover,
